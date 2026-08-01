@@ -1,16 +1,13 @@
 /* =====================================================
    UAE Service Reminder
-   Version 0.4
-   Reminder Engine + Edit Feature
+   Version 0.5
+   Complete Reminder System
    ===================================================== */
 
 
-// -----------------------------
-// Data
-// -----------------------------
-
-let reminders = JSON.parse(
-    localStorage.getItem("reminders")
+let reminders =
+JSON.parse(
+localStorage.getItem("reminders")
 ) || [];
 
 
@@ -18,44 +15,31 @@ let editingId = null;
 
 
 
-// -----------------------------
 // Elements
-// -----------------------------
 
 const addBtn =
-document.getElementById(
-    "addReminderBtn"
-);
+document.getElementById("addReminderBtn");
 
 
 const modal =
-document.getElementById(
-    "modal"
-);
+document.getElementById("modal");
 
 
 const cancelBtn =
-document.getElementById(
-    "cancelReminder"
-);
+document.getElementById("cancelReminder");
 
 
 const saveBtn =
-document.getElementById(
-    "saveReminder"
-);
+document.getElementById("saveReminder");
 
 
 const reminderContainer =
-document.getElementById(
-    "reminderContainer"
-);
+document.getElementById("reminderContainer");
 
 
 
-// -----------------------------
-// Open Add Modal
-// -----------------------------
+
+// Open Add Reminder
 
 addBtn.addEventListener(
 "click",
@@ -73,9 +57,8 @@ addBtn.addEventListener(
 
 
 
-// -----------------------------
+
 // Close Modal
-// -----------------------------
 
 cancelBtn.addEventListener(
 "click",
@@ -90,143 +73,116 @@ cancelBtn.addEventListener(
 
 
 
-// -----------------------------
+
 // Save Reminder
-// -----------------------------
 
 saveBtn.addEventListener(
 "click",
 ()=>{
 
 
-    const category =
-    document.getElementById(
-        "category"
-    ).value;
+const category =
+document.getElementById("category").value;
+
+
+const title =
+document.getElementById("title").value.trim();
+
+
+const dueDate =
+document.getElementById("dueDate").value;
+
+
+const notes =
+document.getElementById("notes").value.trim();
 
 
 
-    const title =
-    document.getElementById(
-        "title"
-    ).value.trim();
+if(
+title === "" ||
+dueDate === ""
+){
+
+alert(
+"Please enter title and due date"
+);
+
+return;
+
+}
 
 
 
-    const dueDate =
-    document.getElementById(
-        "dueDate"
-    ).value;
+
+if(editingId){
+
+
+reminders =
+reminders.map(
+item =>
+
+item.id === editingId
+
+?
+
+{
+...item,
+category,
+title,
+dueDate,
+notes
+}
+
+:
+
+item
+
+);
+
+
+editingId = null;
+
+
+}
+
+else{
+
+
+reminders.push({
+
+id:Date.now(),
+
+category,
+
+title,
+
+dueDate,
+
+notes,
+
+created:
+new Date().toISOString()
+
+});
+
+
+}
 
 
 
-    const notes =
-    document.getElementById(
-        "notes"
-    ).value.trim();
+saveData();
+
+displayReminders();
+
+updateDashboard();
+
+clearForm();
 
 
+modal.classList.add(
+"hidden"
+);
 
-    if(
-        title === "" ||
-        dueDate === ""
-    ){
-
-        alert(
-        "Please enter title and due date"
-        );
-
-        return;
-
-    }
-
-
-
-    if(editingId){
-
-
-        reminders =
-        reminders.map(
-        item =>
-
-        item.id === editingId
-
-        ?
-
-        {
-
-            ...item,
-
-            category,
-
-            title,
-
-            dueDate,
-
-            notes
-
-        }
-
-        :
-
-        item
-
-        );
-
-
-        editingId = null;
-
-
-    }
-
-    else{
-
-
-        const reminder = {
-
-
-            id:Date.now(),
-
-            category,
-
-            title,
-
-            dueDate,
-
-            notes,
-
-
-            created:
-            new Date()
-            .toISOString()
-
-        };
-
-
-        reminders.push(
-            reminder
-        );
-
-
-    }
-
-
-
-    saveData();
-
-
-    displayReminders();
-
-
-    updateDashboard();
-
-
-    clearForm();
-
-
-    modal.classList.add(
-        "hidden"
-    );
 
 
 });
@@ -235,277 +191,264 @@ saveBtn.addEventListener(
 
 
 
-// -----------------------------
-// Save Storage
-// -----------------------------
+
+// Save Data
 
 function saveData(){
 
-
-    localStorage.setItem(
-
-        "reminders",
-
-        JSON.stringify(
-            reminders
-        )
-
-    );
-
+localStorage.setItem(
+"reminders",
+JSON.stringify(reminders)
+);
 
 }
 
 
 
 
-// -----------------------------
+
 // Display Cards
-// -----------------------------
 
 function displayReminders(){
 
 
-    reminderContainer.innerHTML="";
+reminderContainer.innerHTML = "";
 
 
 
-    if(
-        reminders.length === 0
-    ){
+if(reminders.length === 0){
 
 
-        reminderContainer.innerHTML=`
+reminderContainer.innerHTML = `
 
-        <div class="empty-state">
+<div class="empty-state">
 
-        <h2>No Reminders Yet</h2>
+<h2>No Reminders Yet</h2>
 
-        <p>
-        Click + to add your first reminder.
-        </p>
+<p>
+Click + to add your first reminder.
+</p>
 
-        </div>
+</div>
 
-        `;
+`;
 
+return;
 
-        return;
+}
 
 
-    }
 
 
+reminders.forEach(
+reminder=>{
 
 
-    reminders.forEach(
-    reminder=>{
+const days =
+calculateDays(
+reminder.dueDate
+);
 
 
-        const days =
-        calculateDays(
-            reminder.dueDate
-        );
 
+let status =
+"safe";
 
 
-        let status =
-        "safe";
 
+if(days.expired){
 
+status =
+"expired";
 
-        if(days.expired){
+}
 
-            status =
-            "expired";
+else if(days.number <= 7){
 
-        }
+status =
+"urgent";
 
-        else if(
-            days.number <= 7
-        ){
+}
 
-            status =
-            "urgent";
+else if(days.number <= 30){
 
-        }
+status =
+"warning";
 
-        else if(
-            days.number <= 30
-        ){
+}
 
-            status =
-            "warning";
 
-        }
 
 
 
+const card =
+document.createElement(
+"div"
+);
 
-        const card =
-        document.createElement(
-            "div"
-        );
 
 
+card.className =
+"reminder-card "
++
+status;
 
-        card.className =
-        "reminder-card "
-        +
-        status;
 
 
 
+// THIS CREATES THE CARD CONTENT
 
-        card.innerHTML = `
+card.innerHTML = `
 
 
-        <span class="category">
+<span class="category">
 
-        ${reminder.category}
+${reminder.category}
 
-        </span>
+</span>
 
 
 
-        <h2>
+<h2>
 
-        ${reminder.title}
+${reminder.title}
 
-        </h2>
+</h2>
 
 
 
 
-        <p>
+<p>
 
-        <strong>Due:</strong>
+<strong>Due:</strong>
 
-        ${formatDate(
-            reminder.dueDate
-        )}
+${formatDate(
+reminder.dueDate
+)}
 
-        </p>
+</p>
 
 
 
 
-        <h3>
+<h3>
 
-        ${days.text}
+${days.text}
 
-        </h3>
+</h3>
 
 
 
+${
+reminder.notes
 
-        ${
-            reminder.notes
+?
 
-            ?
+`<p>${reminder.notes}</p>`
 
-            `<p>${reminder.notes}</p>`
+:
 
-            :
+""
 
-            ""
+}
 
-        }
 
 
 
+<button onclick="editReminder(${reminder.id})">
 
-        <button onclick="editReminder(${reminder.id})">
+Edit
 
-        Edit
+</button>
 
-        </button>
 
 
+<button onclick="deleteReminder(${reminder.id})">
 
+Delete
 
-        <button onclick="deleteReminder(${reminder.id})">
+</button>
 
-        Delete
 
-        </button>
 
+`;
 
-        `;
 
 
+reminderContainer.appendChild(
+card
+);
 
-        reminderContainer.appendChild(
-            card
-        );
 
 
-    });
+});
 
 
 }
 
 
 
-// -----------------------------
+
+
 // Edit Reminder
-// -----------------------------
 
 function editReminder(id){
 
 
-
-    const reminder =
-    reminders.find(
-        item =>
-        item.id === id
-    );
-
-
-
-    if(!reminder){
-
-        return;
-
-    }
+const reminder =
+reminders.find(
+item =>
+item.id === id
+);
 
 
 
-    document.getElementById(
-        "category"
-    ).value =
-    reminder.category;
+if(!reminder){
+
+return;
+
+}
 
 
 
-    document.getElementById(
-        "title"
-    ).value =
-    reminder.title;
+
+document.getElementById(
+"category"
+).value =
+reminder.category;
 
 
 
-    document.getElementById(
-        "dueDate"
-    ).value =
-    reminder.dueDate;
+document.getElementById(
+"title"
+).value =
+reminder.title;
 
 
 
-    document.getElementById(
-        "notes"
-    ).value =
-    reminder.notes;
+document.getElementById(
+"dueDate"
+).value =
+reminder.dueDate;
 
 
 
-    editingId =
-    id;
+document.getElementById(
+"notes"
+).value =
+reminder.notes;
 
 
 
-    modal.classList.remove(
-        "hidden"
-    );
+editingId =
+id;
+
+
+
+modal.classList.remove(
+"hidden"
+);
+
 
 
 }
@@ -513,39 +456,37 @@ function editReminder(id){
 
 
 
-// -----------------------------
+
 // Delete Reminder
-// -----------------------------
 
 function deleteReminder(id){
 
 
+if(
+confirm(
+"Delete this reminder?"
+)
 
-    if(
-        confirm(
-        "Delete this reminder?"
-        )
-    ){
-
-
-        reminders =
-        reminders.filter(
-            item =>
-            item.id !== id
-        );
+){
 
 
-
-        saveData();
-
-
-        displayReminders();
-
-
-        updateDashboard();
+reminders =
+reminders.filter(
+item =>
+item.id !== id
+);
 
 
-    }
+
+saveData();
+
+displayReminders();
+
+updateDashboard();
+
+
+}
+
 
 
 }
@@ -554,130 +495,98 @@ function deleteReminder(id){
 
 
 
-// -----------------------------
-// Date Calculation
-// -----------------------------
+// Calculate Days
 
 function calculateDays(date){
 
 
+const today =
+new Date();
 
-    const today =
-    new Date();
 
+today.setHours(
+0,0,0,0
+);
 
-    today.setHours(
-        0,0,0,0
-    );
 
 
+const expiry =
+new Date(date);
 
-    const expiry =
-    new Date(date);
 
+expiry.setHours(
+0,0,0,0
+);
 
-    expiry.setHours(
-        0,0,0,0
-    );
 
 
+const difference =
+expiry - today;
 
-    const difference =
-    expiry - today;
 
 
+const days =
+Math.ceil(
+difference /
+(1000*60*60*24)
+);
 
-    const days =
-    Math.ceil(
 
-        difference /
 
-        (1000*60*60*24)
+if(days < 0){
 
-    );
 
+return {
 
+number:
+Math.abs(days),
 
+expired:true,
 
-    if(days < 0){
+text:
+"Expired "
++
+Math.abs(days)
++
+" days ago"
 
+};
 
-        return {
 
+}
 
-            number:
-            Math.abs(days),
 
 
-            expired:true,
+if(days === 0){
 
 
-            text:
+return {
 
-            "Expired "
+number:0,
 
-            +
+expired:false,
 
-            Math.abs(days)
+text:
+"Expires Today"
 
-            +
+};
 
-            " days ago"
 
+}
 
-        };
 
 
-    }
+return {
 
+number:days,
 
+expired:false,
 
+text:
+days +
+" Days Remaining"
 
-    if(days === 0){
-
-
-        return {
-
-
-            number:0,
-
-
-            expired:false,
-
-
-            text:
-
-            "Expires Today"
-
-
-        };
-
-
-    }
-
-
-
-
-    return {
-
-
-        number:days,
-
-
-        expired:false,
-
-
-        text:
-
-        days
-
-        +
-
-        " Days Remaining"
-
-
-    };
-
+};
 
 
 }
@@ -685,29 +594,26 @@ function calculateDays(date){
 
 
 
-// -----------------------------
-// Date Format
-// -----------------------------
+
+// Format Date
 
 function formatDate(date){
 
 
-    return new Date(date)
-    .toLocaleDateString(
+return new Date(date)
+.toLocaleDateString(
+"en-GB",
+{
 
-        "en-GB",
+day:"2-digit",
 
-        {
+month:"long",
 
-        day:"2-digit",
+year:"numeric"
 
-        month:"long",
+}
 
-        year:"numeric"
-
-        }
-
-    );
+);
 
 
 }
@@ -716,86 +622,79 @@ function formatDate(date){
 
 
 
-// -----------------------------
+
 // Dashboard
-// -----------------------------
 
 function updateDashboard(){
 
 
+let expired = 0;
 
-    let expired = 0;
+let week = 0;
 
-    let week = 0;
-
-    let month = 0;
-
-
-
-    reminders.forEach(
-    reminder=>{
-
-
-        const result =
-        calculateDays(
-            reminder.dueDate
-        );
+let month = 0;
 
 
 
-        if(result.expired){
-
-            expired++;
-
-        }
-
-        else if(
-            result.number <= 7
-        ){
-
-            week++;
-
-        }
-
-        else if(
-            result.number <=30
-        ){
-
-            month++;
-
-        }
+reminders.forEach(
+reminder=>{
 
 
-    });
+const result =
+calculateDays(
+reminder.dueDate
+);
 
 
 
-    document.getElementById(
-        "totalCount"
-    ).innerText =
-    reminders.length;
+if(result.expired){
+
+expired++;
+
+}
+
+else if(result.number <= 7){
+
+week++;
+
+}
+
+else if(result.number <= 30){
+
+month++;
+
+}
+
+
+});
 
 
 
-    document.getElementById(
-        "weekCount"
-    ).innerText =
-    week;
+document.getElementById(
+"totalCount"
+).innerText =
+reminders.length;
 
 
 
-    document.getElementById(
-        "monthCount"
-    ).innerText =
-    month;
+document.getElementById(
+"weekCount"
+).innerText =
+week;
 
 
 
-    document.getElementById(
-        "expiredCount"
-    ).innerText =
-    expired;
+document.getElementById(
+"monthCount"
+).innerText =
+month;
 
+
+
+document.getElementById(
+"expiredCount"
+).innerText =
+expired;
 
 
 }
@@ -804,26 +703,24 @@ function updateDashboard(){
 
 
 
-// -----------------------------
 // Clear Form
-// -----------------------------
 
 function clearForm(){
 
 
-    document.getElementById(
-        "title"
-    ).value="";
+document.getElementById(
+"title"
+).value="";
 
 
-    document.getElementById(
-        "dueDate"
-    ).value="";
+document.getElementById(
+"dueDate"
+).value="";
 
 
-    document.getElementById(
-        "notes"
-    ).value="";
+document.getElementById(
+"notes"
+).value="";
 
 
 }
@@ -832,9 +729,8 @@ function clearForm(){
 
 
 
-// -----------------------------
+
 // Start App
-// -----------------------------
 
 displayReminders();
 

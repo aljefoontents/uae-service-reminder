@@ -308,3 +308,662 @@ main{
     color:#666;
 
 }
+
+/* =====================================================
+   MODAL & BUTTONS
+   ===================================================== */
+
+
+/* ---------- FLOATING ADD BUTTON ---------- */
+
+#addReminderBtn{
+
+    position:fixed;
+
+    right:30px;
+
+    bottom:30px;
+
+    width:65px;
+
+    height:65px;
+
+    border-radius:50%;
+
+    border:none;
+
+    background:var(--primary);
+
+    color:white;
+
+    font-size:38px;
+
+    cursor:pointer;
+
+    box-shadow:
+    0 10px 25px rgba(0,0,0,.2);
+
+    transition:.25s;
+
+}
+
+
+#addReminderBtn:hover{
+
+    transform:scale(1.1);
+
+    background:#08375f;
+
+}
+
+
+
+/* ---------- MODAL ---------- */
+
+
+.modal{
+
+    position:fixed;
+
+    inset:0;
+
+    background:
+    rgba(0,0,0,.45);
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    padding:20px;
+
+    z-index:1000;
+
+}
+
+
+.modal-content{
+
+    background:white;
+
+    width:100%;
+
+    max-width:500px;
+
+    padding:30px;
+
+    border-radius:var(--radius);
+
+    box-shadow:var(--shadow);
+
+    animation:
+    slideDown .3s ease;
+
+}
+
+
+
+.modal-content h2{
+
+    color:var(--primary);
+
+    margin-bottom:20px;
+
+}
+
+
+
+/* ---------- HIDDEN CLASS ---------- */
+
+
+.hidden{
+
+    display:none;
+
+}
+
+
+
+/* ---------- FORM ---------- */
+
+
+.modal-content label{
+
+    display:block;
+
+    margin-bottom:15px;
+
+    font-weight:600;
+
+}
+
+
+
+.modal-content input,
+.modal-content select,
+.modal-content textarea{
+
+
+    width:100%;
+
+    margin-top:8px;
+
+    padding:13px;
+
+    border-radius:10px;
+
+    border:1px solid var(--border);
+
+    font-size:16px;
+
+}
+
+
+.modal-content textarea{
+
+    height:100px;
+
+    resize:none;
+
+}
+
+
+
+/* ---------- MODAL BUTTONS ---------- */
+
+
+.modal-buttons{
+
+    display:flex;
+
+    gap:15px;
+
+    margin-top:20px;
+
+}
+
+
+
+.modal-buttons button{
+
+    flex:1;
+
+    padding:14px;
+
+    border:none;
+
+    border-radius:10px;
+
+    cursor:pointer;
+
+    font-size:16px;
+
+    font-weight:600;
+
+}
+
+
+
+#saveReminder{
+
+    background:var(--secondary);
+
+    color:white;
+
+}
+
+
+
+#cancelReminder{
+
+    background:#ddd;
+
+    color:#333;
+
+}
+
+
+
+.modal-buttons button:hover{
+
+    opacity:.85;
+
+}
+
+
+
+/* ---------- ANIMATION ---------- */
+
+
+@keyframes slideDown{
+
+    from{
+
+        opacity:0;
+
+        transform:
+        translateY(-30px);
+
+    }
+
+
+    to{
+
+        opacity:1;
+
+        transform:
+        translateY(0);
+
+    }
+
+}
+
+
+
+/* =====================================================
+   MOBILE DESIGN
+   ===================================================== */
+
+
+@media(max-width:600px){
+
+
+.header{
+
+    padding:15px;
+
+}
+
+
+.logo{
+
+    font-size:18px;
+
+}
+
+
+main{
+
+    padding:15px;
+
+}
+
+
+
+.hero{
+
+    padding:25px 15px;
+
+}
+
+
+.hero h1{
+
+    font-size:28px;
+
+}
+
+
+
+.stat-card span{
+
+    font-size:30px;
+
+}
+
+
+
+#reminderContainer{
+
+    grid-template-columns:1fr;
+
+}
+
+
+
+#addReminderBtn{
+
+    right:20px;
+
+    bottom:20px;
+
+}
+
+
+.modal-content{
+
+    padding:20px;
+
+}
+
+/* =====================================================
+   MODAL & BUTTONS
+   ===================================================== */
+
+
+/* ---------- FLOATING ADD BUTTON ---------- */
+
+#addReminderBtn{
+
+    position:fixed;
+
+    right:30px;
+
+    bottom:30px;
+
+    width:65px;
+
+    height:65px;
+
+    border-radius:50%;
+
+    border:none;
+
+    background:var(--primary);
+
+    color:white;
+
+    font-size:38px;
+
+    cursor:pointer;
+
+    box-shadow:
+    0 10px 25px rgba(0,0,0,.2);
+
+    transition:.25s;
+
+}
+
+
+#addReminderBtn:hover{
+
+    transform:scale(1.1);
+
+    background:#08375f;
+
+}
+
+
+
+/* ---------- MODAL ---------- */
+
+
+.modal{
+
+    position:fixed;
+
+    inset:0;
+
+    background:
+    rgba(0,0,0,.45);
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    padding:20px;
+
+    z-index:1000;
+
+}
+
+
+.modal-content{
+
+    background:white;
+
+    width:100%;
+
+    max-width:500px;
+
+    padding:30px;
+
+    border-radius:var(--radius);
+
+    box-shadow:var(--shadow);
+
+    animation:
+    slideDown .3s ease;
+
+}
+
+
+
+.modal-content h2{
+
+    color:var(--primary);
+
+    margin-bottom:20px;
+
+}
+
+
+
+/* ---------- HIDDEN CLASS ---------- */
+
+
+.hidden{
+
+    display:none;
+
+}
+
+
+
+/* ---------- FORM ---------- */
+
+
+.modal-content label{
+
+    display:block;
+
+    margin-bottom:15px;
+
+    font-weight:600;
+
+}
+
+
+
+.modal-content input,
+.modal-content select,
+.modal-content textarea{
+
+
+    width:100%;
+
+    margin-top:8px;
+
+    padding:13px;
+
+    border-radius:10px;
+
+    border:1px solid var(--border);
+
+    font-size:16px;
+
+}
+
+
+.modal-content textarea{
+
+    height:100px;
+
+    resize:none;
+
+}
+
+
+
+/* ---------- MODAL BUTTONS ---------- */
+
+
+.modal-buttons{
+
+    display:flex;
+
+    gap:15px;
+
+    margin-top:20px;
+
+}
+
+
+
+.modal-buttons button{
+
+    flex:1;
+
+    padding:14px;
+
+    border:none;
+
+    border-radius:10px;
+
+    cursor:pointer;
+
+    font-size:16px;
+
+    font-weight:600;
+
+}
+
+
+
+#saveReminder{
+
+    background:var(--secondary);
+
+    color:white;
+
+}
+
+
+
+#cancelReminder{
+
+    background:#ddd;
+
+    color:#333;
+
+}
+
+
+
+.modal-buttons button:hover{
+
+    opacity:.85;
+
+}
+
+
+
+/* ---------- ANIMATION ---------- */
+
+
+@keyframes slideDown{
+
+    from{
+
+        opacity:0;
+
+        transform:
+        translateY(-30px);
+
+    }
+
+
+    to{
+
+        opacity:1;
+
+        transform:
+        translateY(0);
+
+    }
+
+}
+
+
+
+/* =====================================================
+   MOBILE DESIGN
+   ===================================================== */
+
+
+@media(max-width:600px){
+
+
+.header{
+
+    padding:15px;
+
+}
+
+
+.logo{
+
+    font-size:18px;
+
+}
+
+
+main{
+
+    padding:15px;
+
+}
+
+
+
+.hero{
+
+    padding:25px 15px;
+
+}
+
+
+.hero h1{
+
+    font-size:28px;
+
+}
+
+
+
+.stat-card span{
+
+    font-size:30px;
+
+}
+
+
+
+#reminderContainer{
+
+    grid-template-columns:1fr;
+
+}
+
+
+
+#addReminderBtn{
+
+    right:20px;
+
+    bottom:20px;
+
+}
+
+
+.modal-content{
+
+    padding:20px;
+
+}
+
+
+}

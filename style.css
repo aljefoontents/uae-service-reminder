@@ -1,7 +1,8 @@
 /* =====================================================
    UAE Service Reminder
-   Version 0.1
+   Version 0.1 - Main Styles
    ===================================================== */
+
 
 /* ---------- RESET ---------- */
 
@@ -14,6 +15,7 @@
 html{
     scroll-behavior:smooth;
 }
+
 
 body{
 
@@ -31,15 +33,20 @@ body{
     min-height:100vh;
 
     line-height:1.5;
+
 }
+
 
 /* ---------- VARIABLES ---------- */
 
 :root{
 
     --primary:#0F4C81;
+
     --secondary:#2ECC71;
+
     --warning:#F1C40F;
+
     --danger:#E74C3C;
 
     --background:#F4F7FB;
@@ -53,12 +60,14 @@ body{
     --radius:14px;
 
     --shadow:
-        0 10px 25px
-        rgba(0,0,0,.08);
+    0 10px 25px rgba(0,0,0,.08);
 
 }
 
+
+
 /* ---------- HEADER ---------- */
+
 
 .header{
 
@@ -78,6 +87,8 @@ body{
 
 }
 
+
+
 .logo{
 
     font-size:24px;
@@ -86,6 +97,8 @@ body{
 
 }
 
+
+
 .header-actions{
 
     display:flex;
@@ -93,6 +106,8 @@ body{
     gap:10px;
 
 }
+
+
 
 .icon-btn{
 
@@ -114,13 +129,18 @@ body{
 
 }
 
+
+
 .icon-btn:hover{
 
     transform:translateY(-2px);
 
 }
 
+
+
 /* ---------- MAIN ---------- */
+
 
 main{
 
@@ -132,7 +152,10 @@ main{
 
 }
 
+
+
 /* ---------- HERO ---------- */
+
 
 .hero{
 
@@ -150,6 +173,8 @@ main{
 
 }
 
+
+
 .hero h1{
 
     color:var(--primary);
@@ -160,6 +185,8 @@ main{
 
 }
 
+
+
 .hero p{
 
     color:#555;
@@ -168,23 +195,25 @@ main{
 
 }
 
+
+
 /* ---------- STATS ---------- */
+
 
 .stats{
 
     display:grid;
 
     grid-template-columns:
-        repeat(
-            auto-fit,
-            minmax(180px,1fr)
-        );
+    repeat(auto-fit,minmax(180px,1fr));
 
     gap:20px;
 
     margin-bottom:30px;
 
 }
+
+
 
 .stat-card{
 
@@ -202,11 +231,15 @@ main{
 
 }
 
+
+
 .stat-card:hover{
 
     transform:translateY(-5px);
 
 }
+
+
 
 .stat-card h3{
 
@@ -215,6 +248,8 @@ main{
     margin-bottom:10px;
 
 }
+
+
 
 .stat-card span{
 
@@ -226,7 +261,10 @@ main{
 
 }
 
+
+
 /* ---------- TOOLBAR ---------- */
+
 
 .toolbar{
 
@@ -240,13 +278,7 @@ main{
 
 }
 
-.toolbar input{
 
-    flex:1;
-
-    min-width:250px;
-
-}
 
 .toolbar input,
 .toolbar select{
@@ -263,23 +295,36 @@ main{
 
 }
 
+
+
+.toolbar input{
+
+    flex:1;
+
+    min-width:250px;
+
+}
+
+
+
 /* ---------- REMINDER AREA ---------- */
+
 
 #reminderContainer{
 
     display:grid;
 
     grid-template-columns:
-        repeat(
-            auto-fill,
-            minmax(320px,1fr)
-        );
+    repeat(auto-fill,minmax(320px,1fr));
 
     gap:20px;
 
 }
 
+
+
 /* ---------- EMPTY STATE ---------- */
+
 
 .empty-state{
 
@@ -295,6 +340,8 @@ main{
 
 }
 
+
+
 .empty-state h2{
 
     color:var(--primary);
@@ -303,18 +350,20 @@ main{
 
 }
 
+
+
 .empty-state p{
 
     color:#666;
 
 }
 
+
+
 /* =====================================================
-   MODAL & BUTTONS
+   ADD BUTTON
    ===================================================== */
 
-
-/* ---------- FLOATING ADD BUTTON ---------- */
 
 #addReminderBtn{
 
@@ -323,6 +372,8 @@ main{
     right:30px;
 
     bottom:30px;
+
+    left:auto;
 
     width:65px;
 
@@ -340,12 +391,21 @@ main{
 
     cursor:pointer;
 
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
     box-shadow:
     0 10px 25px rgba(0,0,0,.2);
 
     transition:.25s;
 
+    z-index:999;
+
 }
+
 
 
 #addReminderBtn:hover{
@@ -358,7 +418,9 @@ main{
 
 
 
-/* ---------- MODAL ---------- */
+/* =====================================================
+   MODAL
+   ===================================================== */
 
 
 .modal{
@@ -367,8 +429,7 @@ main{
 
     inset:0;
 
-    background:
-    rgba(0,0,0,.45);
+    background:rgba(0,0,0,.45);
 
     display:flex;
 
@@ -381,6 +442,15 @@ main{
     z-index:1000;
 
 }
+
+
+
+.hidden{
+
+    display:none;
+
+}
+
 
 
 .modal-content{
@@ -397,8 +467,7 @@ main{
 
     box-shadow:var(--shadow);
 
-    animation:
-    slideDown .3s ease;
+    animation:slideDown .3s ease;
 
 }
 
@@ -412,20 +481,6 @@ main{
 
 }
 
-
-
-/* ---------- HIDDEN CLASS ---------- */
-
-
-.hidden{
-
-    display:none;
-
-}
-
-
-
-/* ---------- FORM ---------- */
 
 
 .modal-content label{
@@ -457,7 +512,12 @@ main{
 
     font-size:16px;
 
+    font-family:inherit;
+
+    display:block;
+
 }
+
 
 
 .modal-content textarea{
@@ -542,8 +602,7 @@ main{
 
         opacity:0;
 
-        transform:
-        translateY(-30px);
+        transform:translateY(-30px);
 
     }
 
@@ -552,8 +611,7 @@ main{
 
         opacity:1;
 
-        transform:
-        translateY(0);
+        transform:translateY(0);
 
     }
 
@@ -562,7 +620,7 @@ main{
 
 
 /* =====================================================
-   MOBILE DESIGN
+   MOBILE RESPONSIVE
    ===================================================== */
 
 
@@ -590,7 +648,6 @@ main{
 }
 
 
-
 .hero{
 
     padding:25px 15px;
@@ -605,7 +662,6 @@ main{
 }
 
 
-
 .stat-card span{
 
     font-size:30px;
@@ -613,341 +669,11 @@ main{
 }
 
 
-
 #reminderContainer{
 
     grid-template-columns:1fr;
 
 }
-
-
-
-#addReminderBtn{
-
-    right:20px;
-
-    bottom:20px;
-
-}
-
-
-.modal-content{
-
-    padding:20px;
-
-}
-
-/* =====================================================
-   MODAL & BUTTONS
-   ===================================================== */
-
-
-/* ---------- FLOATING ADD BUTTON ---------- */
-
-#addReminderBtn{
-
-    position:fixed;
-
-    right:30px;
-
-    bottom:30px;
-
-    width:65px;
-
-    height:65px;
-
-    border-radius:50%;
-
-    border:none;
-
-    background:var(--primary);
-
-    color:white;
-
-    font-size:38px;
-
-    cursor:pointer;
-
-    box-shadow:
-    0 10px 25px rgba(0,0,0,.2);
-
-    transition:.25s;
-
-}
-
-
-#addReminderBtn:hover{
-
-    transform:scale(1.1);
-
-    background:#08375f;
-
-}
-
-
-
-/* ---------- MODAL ---------- */
-
-
-.modal{
-
-    position:fixed;
-
-    inset:0;
-
-    background:
-    rgba(0,0,0,.45);
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    padding:20px;
-
-    z-index:1000;
-
-}
-
-
-.modal-content{
-
-    background:white;
-
-    width:100%;
-
-    max-width:500px;
-
-    padding:30px;
-
-    border-radius:var(--radius);
-
-    box-shadow:var(--shadow);
-
-    animation:
-    slideDown .3s ease;
-
-}
-
-
-
-.modal-content h2{
-
-    color:var(--primary);
-
-    margin-bottom:20px;
-
-}
-
-
-
-/* ---------- HIDDEN CLASS ---------- */
-
-
-.hidden{
-
-    display:none;
-
-}
-
-
-
-/* ---------- FORM ---------- */
-
-
-.modal-content label{
-
-    display:block;
-
-    margin-bottom:15px;
-
-    font-weight:600;
-
-}
-
-
-
-.modal-content input,
-.modal-content select,
-.modal-content textarea{
-
-
-    width:100%;
-
-    margin-top:8px;
-
-    padding:13px;
-
-    border-radius:10px;
-
-    border:1px solid var(--border);
-
-    font-size:16px;
-
-}
-
-
-.modal-content textarea{
-
-    height:100px;
-
-    resize:none;
-
-}
-
-
-
-/* ---------- MODAL BUTTONS ---------- */
-
-
-.modal-buttons{
-
-    display:flex;
-
-    gap:15px;
-
-    margin-top:20px;
-
-}
-
-
-
-.modal-buttons button{
-
-    flex:1;
-
-    padding:14px;
-
-    border:none;
-
-    border-radius:10px;
-
-    cursor:pointer;
-
-    font-size:16px;
-
-    font-weight:600;
-
-}
-
-
-
-#saveReminder{
-
-    background:var(--secondary);
-
-    color:white;
-
-}
-
-
-
-#cancelReminder{
-
-    background:#ddd;
-
-    color:#333;
-
-}
-
-
-
-.modal-buttons button:hover{
-
-    opacity:.85;
-
-}
-
-
-
-/* ---------- ANIMATION ---------- */
-
-
-@keyframes slideDown{
-
-    from{
-
-        opacity:0;
-
-        transform:
-        translateY(-30px);
-
-    }
-
-
-    to{
-
-        opacity:1;
-
-        transform:
-        translateY(0);
-
-    }
-
-}
-
-
-
-/* =====================================================
-   MOBILE DESIGN
-   ===================================================== */
-
-
-@media(max-width:600px){
-
-
-.header{
-
-    padding:15px;
-
-}
-
-
-.logo{
-
-    font-size:18px;
-
-}
-
-
-main{
-
-    padding:15px;
-
-}
-
-
-
-.hero{
-
-    padding:25px 15px;
-
-}
-
-
-.hero h1{
-
-    font-size:28px;
-
-}
-
-
-
-.stat-card span{
-
-    font-size:30px;
-
-}
-
-
-
-#reminderContainer{
-
-    grid-template-columns:1fr;
-
-}
-
 
 
 #addReminderBtn{

@@ -1,12 +1,12 @@
 /* =====================================================
    UAE Service Reminder
-   Version 0.3
-   Reminder Engine + Status Cards
+   Version 0.4
+   Reminder Engine + Edit Feature
    ===================================================== */
 
 
 // -----------------------------
-// Load Saved Reminders
+// Data
 // -----------------------------
 
 let reminders = JSON.parse(
@@ -14,25 +14,37 @@ let reminders = JSON.parse(
 ) || [];
 
 
+let editingId = null;
+
+
+
 // -----------------------------
 // Elements
 // -----------------------------
 
-const addBtn = document.getElementById(
+const addBtn =
+document.getElementById(
     "addReminderBtn"
 );
 
-const modal = document.getElementById(
+
+const modal =
+document.getElementById(
     "modal"
 );
 
-const cancelBtn = document.getElementById(
+
+const cancelBtn =
+document.getElementById(
     "cancelReminder"
 );
 
-const saveBtn = document.getElementById(
+
+const saveBtn =
+document.getElementById(
     "saveReminder"
 );
+
 
 const reminderContainer =
 document.getElementById(
@@ -40,19 +52,25 @@ document.getElementById(
 );
 
 
+
 // -----------------------------
-// Open Modal
+// Open Add Modal
 // -----------------------------
 
 addBtn.addEventListener(
 "click",
 ()=>{
 
+    editingId = null;
+
+    clearForm();
+
     modal.classList.remove(
         "hidden"
     );
 
 });
+
 
 
 // -----------------------------
@@ -70,6 +88,8 @@ cancelBtn.addEventListener(
 });
 
 
+
+
 // -----------------------------
 // Save Reminder
 // -----------------------------
@@ -85,16 +105,19 @@ saveBtn.addEventListener(
     ).value;
 
 
+
     const title =
     document.getElementById(
         "title"
     ).value.trim();
 
 
+
     const dueDate =
     document.getElementById(
         "dueDate"
     ).value;
+
 
 
     const notes =
@@ -119,28 +142,74 @@ saveBtn.addEventListener(
 
 
 
-    const reminder = {
-
-        id: Date.now(),
-
-        category,
-
-        title,
-
-        dueDate,
-
-        notes,
-
-        created:
-        new Date()
-        .toISOString()
-
-    };
+    if(editingId){
 
 
-    reminders.push(
-        reminder
-    );
+        reminders =
+        reminders.map(
+        item =>
+
+        item.id === editingId
+
+        ?
+
+        {
+
+            ...item,
+
+            category,
+
+            title,
+
+            dueDate,
+
+            notes
+
+        }
+
+        :
+
+        item
+
+        );
+
+
+        editingId = null;
+
+
+    }
+
+    else{
+
+
+        const reminder = {
+
+
+            id:Date.now(),
+
+            category,
+
+            title,
+
+            dueDate,
+
+            notes,
+
+
+            created:
+            new Date()
+            .toISOString()
+
+        };
+
+
+        reminders.push(
+            reminder
+        );
+
+
+    }
+
 
 
     saveData();
@@ -164,23 +233,33 @@ saveBtn.addEventListener(
 
 
 
+
+
 // -----------------------------
-// Save Data
+// Save Storage
 // -----------------------------
 
 function saveData(){
 
+
     localStorage.setItem(
+
         "reminders",
-        JSON.stringify(reminders)
+
+        JSON.stringify(
+            reminders
+        )
+
     );
+
 
 }
 
 
 
+
 // -----------------------------
-// Display Reminders
+// Display Cards
 // -----------------------------
 
 function displayReminders(){
@@ -189,27 +268,32 @@ function displayReminders(){
     reminderContainer.innerHTML="";
 
 
+
     if(
         reminders.length === 0
     ){
+
 
         reminderContainer.innerHTML=`
 
         <div class="empty-state">
 
-            <h2>No Reminders Yet</h2>
+        <h2>No Reminders Yet</h2>
 
-            <p>
-            Click + to add your first reminder.
-            </p>
+        <p>
+        Click + to add your first reminder.
+        </p>
 
         </div>
 
         `;
 
+
         return;
 
+
     }
+
 
 
 
@@ -223,16 +307,15 @@ function displayReminders(){
         );
 
 
-        let statusClass =
+
+        let status =
         "safe";
 
 
 
-        if(
-            days.expired
-        ){
+        if(days.expired){
 
-            statusClass =
+            status =
             "expired";
 
         }
@@ -241,7 +324,7 @@ function displayReminders(){
             days.number <= 7
         ){
 
-            statusClass =
+            status =
             "urgent";
 
         }
@@ -250,10 +333,11 @@ function displayReminders(){
             days.number <= 30
         ){
 
-            statusClass =
+            status =
             "warning";
 
         }
+
 
 
 
@@ -263,53 +347,91 @@ function displayReminders(){
         );
 
 
+
         card.className =
         "reminder-card "
         +
-        statusClass;
+        status;
 
 
 
-        card.innerHTML=`
 
-            <span class="category">
-            ${reminder.category}
-            </span>
+        card.innerHTML = `
 
 
-            <h2>
-            ${reminder.title}
-            </h2>
+        <span class="category">
+
+        ${reminder.category}
+
+        </span>
 
 
-            <p>
-            <strong>Due:</strong>
-            ${formatDate(reminder.dueDate)}
-            </p>
+
+        <h2>
+
+        ${reminder.title}
+
+        </h2>
 
 
-            <h3>
-            ${days.text}
-            </h3>
 
 
-            ${
+        <p>
+
+        <strong>Due:</strong>
+
+        ${formatDate(
+            reminder.dueDate
+        )}
+
+        </p>
+
+
+
+
+        <h3>
+
+        ${days.text}
+
+        </h3>
+
+
+
+
+        ${
             reminder.notes
+
             ?
+
             `<p>${reminder.notes}</p>`
+
             :
+
             ""
-            }
+
+        }
 
 
-            <button onclick="deleteReminder(${reminder.id})">
 
-            Delete
 
-            </button>
+        <button onclick="editReminder(${reminder.id})">
+
+        Edit
+
+        </button>
+
+
+
+
+        <button onclick="deleteReminder(${reminder.id})">
+
+        Delete
+
+        </button>
 
 
         `;
+
 
 
         reminderContainer.appendChild(
@@ -319,126 +441,75 @@ function displayReminders(){
 
     });
 
+
 }
 
 
 
 // -----------------------------
-// Calculate Days Remaining
+// Edit Reminder
 // -----------------------------
 
-function calculateDays(date){
+function editReminder(id){
 
 
-    const today =
-    new Date();
 
-
-    today.setHours(
-        0,0,0,0
-    );
-
-
-    const expiry =
-    new Date(date);
-
-
-    expiry.setHours(
-        0,0,0,0
-    );
-
-
-    const difference =
-    expiry - today;
-
-
-    const days =
-    Math.ceil(
-        difference /
-        (1000*60*60*24)
+    const reminder =
+    reminders.find(
+        item =>
+        item.id === id
     );
 
 
 
-    if(days < 0){
+    if(!reminder){
 
-        return {
-
-            number:
-            Math.abs(days),
-
-            expired:true,
-
-            text:
-            "Expired "
-            +
-            Math.abs(days)
-            +
-            " days ago"
-
-        };
+        return;
 
     }
 
 
 
-    if(days === 0){
-
-        return {
-
-            number:0,
-
-            expired:false,
-
-            text:
-            "Expires Today"
-
-        };
-
-    }
+    document.getElementById(
+        "category"
+    ).value =
+    reminder.category;
 
 
 
-    return {
-
-        number:days,
-
-        expired:false,
-
-        text:
-        days
-        +
-        " Days Remaining"
-
-    };
-
-
-}
+    document.getElementById(
+        "title"
+    ).value =
+    reminder.title;
 
 
 
-// -----------------------------
-// Format Date
-// -----------------------------
+    document.getElementById(
+        "dueDate"
+    ).value =
+    reminder.dueDate;
 
-function formatDate(date){
 
 
-    return new Date(date)
-    .toLocaleDateString(
-        "en-GB",
-        {
+    document.getElementById(
+        "notes"
+    ).value =
+    reminder.notes;
 
-            day:"2-digit",
 
-            month:"long",
 
-            year:"numeric"
+    editingId =
+    id;
 
-        }
+
+
+    modal.classList.remove(
+        "hidden"
     );
 
+
 }
+
 
 
 
@@ -447,6 +518,7 @@ function formatDate(date){
 // -----------------------------
 
 function deleteReminder(id){
+
 
 
     if(
@@ -458,9 +530,10 @@ function deleteReminder(id){
 
         reminders =
         reminders.filter(
-            reminder =>
-            reminder.id !== id
+            item =>
+            item.id !== id
         );
+
 
 
         saveData();
@@ -474,15 +547,181 @@ function deleteReminder(id){
 
     }
 
+
 }
 
 
 
+
+
 // -----------------------------
-// Dashboard Updates
+// Date Calculation
+// -----------------------------
+
+function calculateDays(date){
+
+
+
+    const today =
+    new Date();
+
+
+    today.setHours(
+        0,0,0,0
+    );
+
+
+
+    const expiry =
+    new Date(date);
+
+
+    expiry.setHours(
+        0,0,0,0
+    );
+
+
+
+    const difference =
+    expiry - today;
+
+
+
+    const days =
+    Math.ceil(
+
+        difference /
+
+        (1000*60*60*24)
+
+    );
+
+
+
+
+    if(days < 0){
+
+
+        return {
+
+
+            number:
+            Math.abs(days),
+
+
+            expired:true,
+
+
+            text:
+
+            "Expired "
+
+            +
+
+            Math.abs(days)
+
+            +
+
+            " days ago"
+
+
+        };
+
+
+    }
+
+
+
+
+    if(days === 0){
+
+
+        return {
+
+
+            number:0,
+
+
+            expired:false,
+
+
+            text:
+
+            "Expires Today"
+
+
+        };
+
+
+    }
+
+
+
+
+    return {
+
+
+        number:days,
+
+
+        expired:false,
+
+
+        text:
+
+        days
+
+        +
+
+        " Days Remaining"
+
+
+    };
+
+
+
+}
+
+
+
+
+// -----------------------------
+// Date Format
+// -----------------------------
+
+function formatDate(date){
+
+
+    return new Date(date)
+    .toLocaleDateString(
+
+        "en-GB",
+
+        {
+
+        day:"2-digit",
+
+        month:"long",
+
+        year:"numeric"
+
+        }
+
+    );
+
+
+}
+
+
+
+
+
+// -----------------------------
+// Dashboard
 // -----------------------------
 
 function updateDashboard(){
+
 
 
     let expired = 0;
@@ -504,9 +743,7 @@ function updateDashboard(){
 
 
 
-        if(
-            result.expired
-        ){
+        if(result.expired){
 
             expired++;
 
@@ -521,7 +758,7 @@ function updateDashboard(){
         }
 
         else if(
-            result.number <= 30
+            result.number <=30
         ){
 
             month++;
@@ -560,7 +797,10 @@ function updateDashboard(){
     expired;
 
 
+
 }
+
+
 
 
 
@@ -587,6 +827,8 @@ function clearForm(){
 
 
 }
+
+
 
 
 

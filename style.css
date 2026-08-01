@@ -693,3 +693,165 @@ main{
 
 
 }
+
+/* =====================================================
+   REMINDER CARDS
+   ===================================================== */
+
+
+.reminder-card{
+
+    background:white;
+
+    border-radius:var(--radius);
+
+    padding:25px;
+
+    box-shadow:var(--shadow);
+
+    transition:.25s;
+
+    position:relative;
+
+    border-left:6px solid var(--primary);
+
+}
+
+
+.reminder-card:hover{
+
+    transform:translateY(-5px);
+
+}
+
+
+
+.reminder-card h2{
+
+    color:var(--primary);
+
+    margin-bottom:10px;
+
+    font-size:22px;
+
+}
+
+
+
+.reminder-card p{
+
+    color:#555;
+
+    margin-bottom:8px;
+
+}
+
+
+
+.reminder-card h3{
+
+    margin:15px 0;
+
+    font-size:22px;
+
+    color:var(--secondary);
+
+}
+
+
+
+/* Delete Button */
+
+
+.reminder-card button{
+
+    background:var(--danger);
+
+    color:white;
+
+    border:none;
+
+    padding:10px 18px;
+
+    border-radius:8px;
+
+    cursor:pointer;
+
+    font-weight:600;
+
+    margin-top:15px;
+
+}
+
+
+
+.reminder-card button:hover{
+
+    opacity:.85;
+
+}
+
+
+
+/* =====================================================
+   STATUS COLORS
+   ===================================================== */
+
+
+.reminder-card.urgent{
+
+    border-left-color:
+    var(--danger);
+
+}
+
+
+.reminder-card.warning{
+
+    border-left-color:
+    var(--warning);
+
+}
+
+
+.reminder-card.safe{
+
+    border-left-color:
+    var(--secondary);
+
+}
+
+
+.reminder-card.expired{
+
+    border-left-color:
+    #555;
+
+}
+
+
+
+/* =====================================================
+   CATEGORY STYLE
+   ===================================================== */
+
+
+.category{
+
+    display:inline-block;
+
+    background:#eaf2ff;
+
+    color:var(--primary);
+
+    padding:5px 12px;
+
+    border-radius:20px;
+
+    font-size:13px;
+
+    font-weight:600;
+
+    margin-bottom:12px;
+
+}

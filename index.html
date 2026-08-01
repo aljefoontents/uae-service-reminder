@@ -1,1 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <title>UAE Service Reminder</title>
+
+    <meta name="theme-color" content="#0F4C81">
+
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="favicon.png">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header class="header">
+
+    <div class="logo">
+        🇦🇪 UAE Service Reminder
+    </div>
+
+    <div class="header-actions">
+
+        <button id="languageBtn" class="icon-btn">
+            العربية
+        </button>
+
+        <button id="themeBtn" class="icon-btn">
+            🌙
+        </button>
+
+    </div>
+
+</header>
+
+
+<main>
+
+<section class="hero">
+
+<h1>Never Miss an Important Renewal</h1>
+
+<p>
+Keep track of passports, Emirates ID, visas,
+vehicle registrations, insurance and more.
+</p>
+
+</section>
+
+
+
+<section class="stats">
+
+<div class="stat-card">
+
+<h3>Total</h3>
+
+<span id="totalCount">0</span>
+
+</div>
+
+<div class="stat-card">
+
+<h3>This Week</h3>
+
+<span id="weekCount">0</span>
+
+</div>
+
+<div class="stat-card">
+
+<h3>This Month</h3>
+
+<span id="monthCount">0</span>
+
+</div>
+
+<div class="stat-card">
+
+<h3>Expired</h3>
+
+<span id="expiredCount">0</span>
+
+</div>
+
+</section>
+
+
+
+<section class="toolbar">
+
+<input
+type="text"
+id="searchInput"
+placeholder="Search reminders...">
+
+<select id="sortSelect">
+
+<option value="nearest">
+Nearest Due
+</option>
+
+<option value="furthest">
+Furthest Due
+</option>
+
+<option value="az">
+A-Z
+</option>
+
+<option value="newest">
+Newest
+</option>
+
+</select>
+
+</section>
+
+
+
+<section id="reminderContainer">
+
+<div class="empty-state">
+
+<h2>No Reminders Yet</h2>
+
+<p>
+Click the + button below to add your first reminder.
+</p>
+
+</div>
+
+</section>
+
+</main>
+
+
+<button id="addReminderBtn">
++
+</button>
+
+
+
+<div id="modal" class="modal hidden">
+
+<div class="modal-content">
+
+<h2>Add Reminder</h2>
+
+<label>
+
+Category
+
+<select id="category">
+
+<option>Passport</option>
+
+<option>Emirates ID</option>
+
+<option>Visa</option>
+
+<option>Driving Licence</option>
+
+<option>Vehicle Registration</option>
+
+<option>Car Insurance</option>
+
+<option>Medical Insurance</option>
+
+<option>Trade Licence</option>
+
+<option>AC Service</option>
+
+<option>Water Tank Cleaning</option>
+
+<option>Pest Control</option>
+
+<option>Generator Service</option>
+
+<option>Other</option>
+
+</select>
+
+</label>
+
+<label>
+
+Title
+
+<input
+type="text"
+id="title">
+
+</label>
+
+<label>
+
+Due Date
+
+<input
+type="date"
+id="dueDate">
+
+</label>
+
+<label>
+
+Notes
+
+<textarea id="notes"></textarea>
+
+</label>
+
+<div class="modal-buttons">
+
+<button id="saveReminder">
+
+Save
+
+</button>
+
+<button id="cancelReminder">
+
+Cancel
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+
+<script src="script.js"></script>
+
+</body>
+
+</html>

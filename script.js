@@ -1749,3 +1749,20 @@ updateDashboard();
 
 
 requestNotificationPermission();
+
+// =====================================================
+// SETTINGS BUTTON
+// =====================================================
+
+const settingsBtn = document.getElementById("settingsBtn");
+
+
+if(settingsBtn){
+
+    settingsBtn.addEventListener("click",()=>{
+
+        window.location.href = "settings.html";
+
+    });
+
+}

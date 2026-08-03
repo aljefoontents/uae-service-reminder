@@ -650,12 +650,13 @@ color:white;
 
 .add-btn{
 
-
 position:fixed;
 
 bottom:25px;
 
-left:25px;
+right:25px;
+
+left:auto;
 
 width:60px;
 
@@ -674,29 +675,11 @@ font-size:35px;
 cursor:pointer;
 
 box-shadow:
-
 0 5px 15px rgba(0,0,0,0.25);
 
+z-index:50;
 
 }
-
-
-
-
-
-.add-btn:hover{
-
-
-transform:scale(1.1);
-
-
-}
-
-
-
-
-
-
 
 
 

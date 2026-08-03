@@ -1,18 +1,14 @@
 /* =====================================================
    REMINDO v1.0
    Never Miss What Matters.
-   Main Application Script
 ===================================================== */
 
 
 let reminders =
-JSON.parse(
-localStorage.getItem("reminders")
-) || [];
+JSON.parse(localStorage.getItem("reminders")) || [];
 
 
 let editingId = null;
-
 
 let searchText = "";
 
@@ -23,36 +19,28 @@ let currentSort = "nearest";
 
 
 
-// ================= ELEMENTS =================
-
+// ELEMENTS
 
 const addBtn =
 document.getElementById("addReminderBtn");
 
-
 const modal =
 document.getElementById("modal");
-
 
 const cancelBtn =
 document.getElementById("cancelReminder");
 
-
 const saveBtn =
 document.getElementById("saveReminder");
-
 
 const reminderContainer =
 document.getElementById("reminderContainer");
 
-
 const searchInput =
 document.getElementById("searchInput");
 
-
 const filterSelect =
 document.getElementById("filterSelect");
-
 
 const sortSelect =
 document.getElementById("sortSelect");
@@ -61,44 +49,30 @@ document.getElementById("sortSelect");
 
 
 
-// ================= OPEN MODAL =================
-
+// OPEN MODAL
 
 addBtn.addEventListener(
 "click",
 ()=>{
 
-
 editingId = null;
-
 
 clearForm();
 
-
-modal.classList.remove(
-"hidden"
-);
-
+modal.classList.remove("hidden");
 
 });
 
 
 
 
-
-
-// ================= CLOSE MODAL =================
-
+// CLOSE MODAL
 
 cancelBtn.addEventListener(
 "click",
 ()=>{
 
-
-modal.classList.add(
-"hidden"
-);
-
+modal.classList.add("hidden");
 
 });
 
@@ -106,10 +80,7 @@ modal.classList.add(
 
 
 
-
-
-// ================= SAVE =================
-
+// SAVE REMINDER
 
 saveBtn.addEventListener(
 "click",
@@ -133,22 +104,13 @@ document.getElementById("notes").value.trim();
 
 
 
-if(
-title === "" ||
-dueDate === ""
-){
+if(title === "" || dueDate === ""){
 
-
-alert(
-"Please enter title and due date"
-);
-
+alert("Please enter title and due date");
 
 return;
 
-
 }
-
 
 
 
@@ -157,9 +119,7 @@ if(editingId){
 
 
 reminders =
-reminders.map(
-item =>
-
+reminders.map(item =>
 
 item.id === editingId
 
@@ -179,11 +139,9 @@ notes
 
 }
 
-
 :
 
 item
-
 
 );
 
@@ -195,30 +153,24 @@ else{
 
 reminders.push({
 
-
-id:Date.now(),
-
+id: Date.now(),
 
 category,
 
-
 title,
-
 
 dueDate,
 
-
 notes,
-
 
 created:
 new Date().toISOString()
-
 
 });
 
 
 }
+
 
 
 
@@ -227,19 +179,14 @@ editingId = null;
 
 saveData();
 
-
 displayReminders();
 
-
 updateDashboard();
-
 
 clearForm();
 
 
-modal.classList.add(
-"hidden"
-);
+modal.classList.add("hidden");
 
 
 });
@@ -249,21 +196,14 @@ modal.classList.add(
 
 
 
-
-// ================= STORAGE =================
-
+// STORAGE
 
 function saveData(){
 
-
 localStorage.setItem(
-
 "reminders",
-
 JSON.stringify(reminders)
-
 );
-
 
 }
 
@@ -273,26 +213,29 @@ JSON.stringify(reminders)
 
 
 
-// ================= DISPLAY =================
-
+// DISPLAY REMINDERS
 
 function displayReminders(){
-
 
 
 reminderContainer.innerHTML = "";
 
 
 
-
-let filtered =
-
-reminders.filter(
+let filtered = reminders.filter(
 reminder=>{
 
 
-let searchMatch =
+const days =
+calculateDays(
+reminder.dueDate
+);
 
+
+
+// SEARCH
+
+let searchMatch =
 
 reminder.title
 .toLowerCase()
@@ -313,18 +256,14 @@ reminder.notes
 
 
 
-let days =
-calculateDays(
-reminder.dueDate
-);
 
-
+// FILTER FIXED
 
 let filterMatch = true;
 
 
 
-if(currentFilter==="expired"){
+if(currentFilter === "expired"){
 
 
 filterMatch =
@@ -334,24 +273,38 @@ days.expired;
 }
 
 
-
-if(currentFilter==="urgent"){
+else if(currentFilter === "urgent"){
 
 
 filterMatch =
+
 !days.expired &&
-days.number <=7;
+
+days.number >= 0 &&
+
+days.number <= 7;
 
 
 }
 
 
-
-if(currentFilter==="upcoming"){
+else if(currentFilter === "upcoming"){
 
 
 filterMatch =
-!days.expired;
+
+!days.expired &&
+
+days.number > 7;
+
+
+}
+
+
+else if(currentFilter === "all"){
+
+
+filterMatch = true;
 
 
 }
@@ -361,13 +314,15 @@ filterMatch =
 return searchMatch && filterMatch;
 
 
-
 });
 
 
 
 
 
+
+
+// SORT
 
 filtered.sort(
 (a,b)=>{
@@ -382,7 +337,6 @@ new Date(b.dueDate);
 
 
 }
-
 
 
 if(currentSort==="furthest"){
@@ -418,7 +372,6 @@ return b.id-a.id;
 }
 
 
-
 });
 
 
@@ -426,11 +379,11 @@ return b.id-a.id;
 
 
 
-if(filtered.length===0){
+
+if(filtered.length === 0){
 
 
 reminderContainer.innerHTML = `
-
 
 <div class="empty-state">
 
@@ -438,13 +391,11 @@ reminderContainer.innerHTML = `
 No Reminders Found
 </h2>
 
-
 <p>
-Add a reminder to get started.
+Try changing your filter.
 </p>
 
 </div>
-
 
 `;
 
@@ -459,9 +410,9 @@ return;
 
 
 
+
 filtered.forEach(
 reminder=>{
-
 
 
 const days =
@@ -471,53 +422,40 @@ reminder.dueDate
 
 
 
-let status =
-"safe";
+let status = "safe";
 
 
 
 if(days.expired){
 
-
-status =
-"expired";
-
+status = "expired";
 
 }
 
 else if(days.number <=7){
 
-
-status =
-"urgent";
-
+status = "urgent";
 
 }
 
 else if(days.number <=30){
 
-
-status =
-"warning";
-
+status = "warning";
 
 }
+
 
 
 
 
 
 const card =
-document.createElement(
-"div"
-);
+document.createElement("div");
 
 
 
 card.className =
-"reminder-card "
-+
-status;
+"reminder-card " + status;
 
 
 
@@ -546,9 +484,7 @@ ${reminder.title}
 
 <strong>Due:</strong>
 
-${formatDate(
-reminder.dueDate
-)}
+${formatDate(reminder.dueDate)}
 
 </p>
 
@@ -577,7 +513,6 @@ reminder.notes
 
 
 
-
 <button onclick="editReminder(${reminder.id})">
 
 Edit
@@ -593,20 +528,15 @@ Delete
 </button>
 
 
-
 `;
 
 
 
-
-reminderContainer.appendChild(
-card
-);
+reminderContainer.appendChild(card);
 
 
 
 });
-
 
 
 }
@@ -617,22 +547,19 @@ card
 
 
 
-// ================= EDIT =================
-
+// EDIT
 
 function editReminder(id){
 
 
 const reminder =
 reminders.find(
-item =>
-item.id===id
+item=>item.id===id
 );
 
 
 
-if(!reminder)
-return;
+if(!reminder) return;
 
 
 
@@ -656,11 +583,7 @@ reminder.notes;
 editingId = id;
 
 
-
-modal.classList.remove(
-"hidden"
-);
-
+modal.classList.remove("hidden");
 
 
 }
@@ -671,34 +594,24 @@ modal.classList.remove(
 
 
 
-// ================= DELETE =================
-
+// DELETE
 
 function deleteReminder(id){
 
 
-if(
-confirm(
-"Delete this reminder?"
-)
-
-){
-
+if(confirm("Delete this reminder?")){
 
 
 reminders =
 reminders.filter(
-item =>
-item.id!==id
+item=>item.id!==id
 );
 
 
 
 saveData();
 
-
 displayReminders();
-
 
 updateDashboard();
 
@@ -706,7 +619,6 @@ updateDashboard();
 }
 
 
-
 }
 
 
@@ -715,16 +627,13 @@ updateDashboard();
 
 
 
-// ================= DATE =================
-
+// DATE CALCULATION
 
 function calculateDays(date){
 
 
-
 const today =
 new Date();
-
 
 today.setHours(0,0,0,0);
 
@@ -733,13 +642,12 @@ today.setHours(0,0,0,0);
 const expiry =
 new Date(date);
 
-
 expiry.setHours(0,0,0,0);
 
 
 
 const difference =
-expiry-today;
+expiry - today;
 
 
 
@@ -752,26 +660,19 @@ difference /
 
 
 
-if(days<0){
+if(days < 0){
 
 
 return {
 
-
-number:
-Math.abs(days),
-
+number:Math.abs(days),
 
 expired:true,
 
-
 text:
-"Expired "
-+
-Math.abs(days)
-+
+"Expired " +
+Math.abs(days) +
 " days ago"
-
 
 };
 
@@ -780,23 +681,16 @@ Math.abs(days)
 
 
 
-
-
-if(days===0){
+if(days === 0){
 
 
 return {
-
 
 number:0,
 
-
 expired:false,
 
-
-text:
-"Expires Today"
-
+text:"Expires Today"
 
 };
 
@@ -808,17 +702,13 @@ text:
 
 return {
 
-
 number:days,
-
 
 expired:false,
 
-
 text:
-days+
+days +
 " Days Remaining"
-
 
 };
 
@@ -831,8 +721,7 @@ days+
 
 
 
-// ================= DATE FORMAT =================
-
+// DATE FORMAT
 
 function formatDate(date){
 
@@ -861,17 +750,16 @@ year:"numeric"
 
 
 
-// ================= DASHBOARD =================
-
+// DASHBOARD
 
 function updateDashboard(){
 
 
-let expired=0;
+let expired = 0;
 
-let week=0;
+let week = 0;
 
-let month=0;
+let month = 0;
 
 
 
@@ -879,7 +767,7 @@ reminders.forEach(
 reminder=>{
 
 
-let result =
+const result =
 calculateDays(
 reminder.dueDate
 );
@@ -892,13 +780,13 @@ expired++;
 
 }
 
-else if(result.number<=7){
+else if(result.number <=7){
 
 week++;
 
 }
 
-else if(result.number<=30){
+else if(result.number <=30){
 
 month++;
 
@@ -910,32 +798,20 @@ month++;
 
 
 
-document.getElementById(
-"totalCount"
-).innerText =
+document.getElementById("totalCount").innerText =
 reminders.length;
 
 
-
-document.getElementById(
-"weekCount"
-).innerText =
+document.getElementById("weekCount").innerText =
 week;
 
 
-
-document.getElementById(
-"monthCount"
-).innerText =
+document.getElementById("monthCount").innerText =
 month;
 
 
-
-document.getElementById(
-"expiredCount"
-).innerText =
+document.getElementById("expiredCount").innerText =
 expired;
-
 
 
 }
@@ -946,8 +822,7 @@ expired;
 
 
 
-// ================= SEARCH FILTER SORT =================
-
+// SEARCH
 
 searchInput.addEventListener(
 "input",
@@ -955,9 +830,7 @@ searchInput.addEventListener(
 
 
 searchText =
-searchInput.value
-.toLowerCase();
-
+searchInput.value.toLowerCase();
 
 
 displayReminders();
@@ -967,6 +840,10 @@ displayReminders();
 
 
 
+
+
+
+// FILTER
 
 filterSelect.addEventListener(
 "change",
@@ -984,6 +861,11 @@ displayReminders();
 
 
 
+
+
+
+
+// SORT
 
 sortSelect.addEventListener(
 "change",
@@ -1005,25 +887,18 @@ displayReminders();
 
 
 
-// ================= CLEAR FORM =================
-
+// CLEAR FORM
 
 function clearForm(){
 
 
-document.getElementById(
-"title"
-).value="";
+document.getElementById("title").value="";
 
 
-document.getElementById(
-"dueDate"
-).value="";
+document.getElementById("dueDate").value="";
 
 
-document.getElementById(
-"notes"
-).value="";
+document.getElementById("notes").value="";
 
 
 }
@@ -1034,10 +909,8 @@ document.getElementById(
 
 
 
-// ================= START =================
-
+// START APP
 
 displayReminders();
-
 
 updateDashboard();

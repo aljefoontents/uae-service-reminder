@@ -20,19 +20,17 @@ content="Remindo helps you track renewals, documents, subscriptions, maintenance
 <meta name="theme-color" content="#0F4C81">
 
 
-<!-- Browser Icon -->
 <link rel="icon" type="image/png" href="favicon.png">
 
 
-<!-- Mobile App Icon -->
 <link rel="apple-touch-icon" href="icon-512.png">
 
 
-<!-- Install App Settings -->
 <link rel="manifest" href="manifest.json">
 
 
 <meta name="apple-mobile-web-app-capable" content="yes">
+
 
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 
@@ -56,7 +54,6 @@ content="Remindo helps you track renewals, documents, subscriptions, maintenance
 Remindo
 
 </div>
-
 
 
 <div class="header-actions">
@@ -86,7 +83,6 @@ Remindo
 
 
 
-
 <main>
 
 
@@ -99,7 +95,6 @@ Remindo
 Never Miss What Matters.
 
 </h1>
-
 
 
 <p>
@@ -118,77 +113,51 @@ all in one place.
 
 
 
-
 <section class="stats">
 
 
 
 <div class="stat-card">
 
-<h3>
-Total
-</h3>
+<h3>Total</h3>
 
-<span id="totalCount">
-0
-</span>
+<span id="totalCount">0</span>
 
 </div>
 
 
 
-
-
 <div class="stat-card">
 
-<h3>
-Due This Week
-</h3>
+<h3>Due This Week</h3>
 
-<span id="weekCount">
-0
-</span>
+<span id="weekCount">0</span>
 
 </div>
 
 
 
-
-
 <div class="stat-card">
 
-<h3>
-Due This Month
-</h3>
+<h3>Due This Month</h3>
 
-<span id="monthCount">
-0
-</span>
+<span id="monthCount">0</span>
 
 </div>
 
 
 
-
-
 <div class="stat-card">
 
-<h3>
-Expired
-</h3>
+<h3>Expired</h3>
 
-<span id="expiredCount">
-0
-</span>
+<span id="expiredCount">0</span>
 
 </div>
 
 
 
 </section>
-
-
-
 
 
 
@@ -241,8 +210,6 @@ Expired
 
 
 
-
-
 <select id="sortSelect">
 
 
@@ -277,7 +244,6 @@ Newest Added
 
 
 
-
 <section id="reminderContainer">
 
 
@@ -285,16 +251,12 @@ Newest Added
 
 
 <h2>
-
 No Reminders Yet
-
 </h2>
 
 
 <p>
-
 Click + to add your first reminder.
-
 </p>
 
 
@@ -309,7 +271,6 @@ Click + to add your first reminder.
 
 
 </main>
-
 
 
 
@@ -337,7 +298,6 @@ aria-label="Add Reminder"
 
 
 
-
 <div
 
 id="modal"
@@ -352,9 +312,7 @@ class="modal hidden"
 
 
 <h2>
-
 Add Reminder
-
 </h2>
 
 
@@ -370,139 +328,85 @@ Category
 <select id="category">
 
 
-<option>
-Passport
-</option>
+<option>Passport</option>
 
 
-<option>
-Visa / Residency
-</option>
+<option>Visa / Residency</option>
 
 
-<option>
-National ID
-</option>
+<option>National ID</option>
 
 
-<option>
-Vehicle Registration
-</option>
+<option>Vehicle Registration</option>
 
 
-<option>
-Vehicle Insurance
-</option>
+<option>Vehicle Insurance</option>
 
 
-<option>
-Driving Licence
-</option>
+<option>Driving Licence</option>
 
 
-<option>
-Trade Licence
-</option>
+<option>Trade Licence</option>
 
 
-<option>
-Business Permit
-</option>
+<option>Business Permit</option>
 
 
-<option>
-Company Documents
-</option>
+<option>Company Documents</option>
 
 
-<option>
-Employee Documents
-</option>
+<option>Employee Documents</option>
 
 
-<option>
-Contract Renewal
-</option>
+<option>Contract Renewal</option>
 
 
-<option>
-Property / Lease
-</option>
+<option>Property / Lease</option>
 
 
-<option>
-Home Maintenance
-</option>
+<option>Home Maintenance</option>
 
 
-<option>
-Utilities
-</option>
+<option>Utilities</option>
 
 
-<option>
-Subscriptions
-</option>
+<option>Subscriptions</option>
 
 
-<option>
-Banking / Finance
-</option>
+<option>Banking / Finance</option>
 
 
-<option>
-Tax / VAT
-</option>
+<option>Tax / VAT</option>
 
 
-<option>
-Medical
-</option>
+<option>Medical</option>
 
 
-<option>
-Dental
-</option>
+<option>Dental</option>
 
 
-<option>
-Education
-</option>
+<option>Education</option>
 
 
-<option>
-Travel
-</option>
+<option>Travel</option>
 
 
-<option>
-Memberships
-</option>
+<option>Memberships</option>
 
 
-<option>
-Warranty
-</option>
+<option>Warranty</option>
 
 
-<option>
-Insurance
-</option>
+<option>Insurance</option>
 
 
-<option>
-Appointments
-</option>
+<option>Appointments</option>
 
 
-<option>
-Personal
-</option>
+<option>Personal</option>
 
 
-<option>
-Other
-</option>
+<option>Other</option>
 
 
 </select>
@@ -601,13 +505,11 @@ Cancel
 
 
 
-
 <button id="saveReminder">
 
 Save
 
 </button>
-
 
 
 </div>
@@ -651,7 +553,60 @@ Never Miss What Matters.
 
 
 
+
 <script src="script.js"></script>
+
+
+
+
+
+<script>
+
+
+if ("serviceWorker" in navigator) {
+
+
+window.addEventListener(
+"load",
+()=>{
+
+
+navigator.serviceWorker.register(
+"service-worker.js"
+)
+
+.then(()=>{
+
+
+console.log(
+"Remindo offline mode enabled"
+);
+
+
+})
+
+.catch(error=>{
+
+
+console.log(
+"Service Worker Error:",
+error
+);
+
+
+});
+
+
+});
+
+
+}
+
+
+</script>
+
+
+
 
 
 

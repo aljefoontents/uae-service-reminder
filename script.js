@@ -1,8 +1,8 @@
 /* =====================================================
-   UAE Service Reminder
-   Version 0.5
-   Complete Reminder System
-   ===================================================== */
+   REMINDO v1.0
+   Never Miss What Matters.
+   Main Application Script
+===================================================== */
 
 
 let reminders =
@@ -14,8 +14,17 @@ localStorage.getItem("reminders")
 let editingId = null;
 
 
+let searchText = "";
 
-// Elements
+let currentFilter = "all";
+
+let currentSort = "nearest";
+
+
+
+
+// ================= ELEMENTS =================
+
 
 const addBtn =
 document.getElementById("addReminderBtn");
@@ -37,36 +46,59 @@ const reminderContainer =
 document.getElementById("reminderContainer");
 
 
+const searchInput =
+document.getElementById("searchInput");
 
 
-// Open Add Reminder
+const filterSelect =
+document.getElementById("filterSelect");
+
+
+const sortSelect =
+document.getElementById("sortSelect");
+
+
+
+
+
+// ================= OPEN MODAL =================
+
 
 addBtn.addEventListener(
 "click",
 ()=>{
 
-    editingId = null;
 
-    clearForm();
+editingId = null;
 
-    modal.classList.remove(
-        "hidden"
-    );
+
+clearForm();
+
+
+modal.classList.remove(
+"hidden"
+);
+
 
 });
 
 
 
 
-// Close Modal
+
+
+// ================= CLOSE MODAL =================
+
 
 cancelBtn.addEventListener(
 "click",
 ()=>{
 
-    modal.classList.add(
-        "hidden"
-    );
+
+modal.classList.add(
+"hidden"
+);
+
 
 });
 
@@ -74,7 +106,10 @@ cancelBtn.addEventListener(
 
 
 
-// Save Reminder
+
+
+// ================= SAVE =================
+
 
 saveBtn.addEventListener(
 "click",
@@ -103,13 +138,17 @@ title === "" ||
 dueDate === ""
 ){
 
+
 alert(
 "Please enter title and due date"
 );
 
+
 return;
 
+
 }
+
 
 
 
@@ -121,26 +160,32 @@ reminders =
 reminders.map(
 item =>
 
+
 item.id === editingId
 
 ?
 
 {
+
 ...item,
+
 category,
+
 title,
+
 dueDate,
+
 notes
+
 }
+
 
 :
 
 item
 
+
 );
-
-
-editingId = null;
 
 
 }
@@ -150,18 +195,25 @@ else{
 
 reminders.push({
 
+
 id:Date.now(),
+
 
 category,
 
+
 title,
+
 
 dueDate,
 
+
 notes,
+
 
 created:
 new Date().toISOString()
+
 
 });
 
@@ -170,11 +222,17 @@ new Date().toISOString()
 
 
 
+editingId = null;
+
+
 saveData();
+
 
 displayReminders();
 
+
 updateDashboard();
+
 
 clearForm();
 
@@ -184,6 +242,125 @@ modal.classList.add(
 );
 
 
+});
+
+
+
+
+
+
+
+// ================= STORAGE =================
+
+
+function saveData(){
+
+
+localStorage.setItem(
+
+"reminders",
+
+JSON.stringify(reminders)
+
+);
+
+
+}
+
+
+
+
+
+
+
+// ================= DISPLAY =================
+
+
+function displayReminders(){
+
+
+
+reminderContainer.innerHTML = "";
+
+
+
+
+let filtered =
+
+reminders.filter(
+reminder=>{
+
+
+let searchMatch =
+
+
+reminder.title
+.toLowerCase()
+.includes(searchText)
+
+||
+
+reminder.category
+.toLowerCase()
+.includes(searchText)
+
+||
+
+reminder.notes
+.toLowerCase()
+.includes(searchText);
+
+
+
+
+let days =
+calculateDays(
+reminder.dueDate
+);
+
+
+
+let filterMatch = true;
+
+
+
+if(currentFilter==="expired"){
+
+
+filterMatch =
+days.expired;
+
+
+}
+
+
+
+if(currentFilter==="urgent"){
+
+
+filterMatch =
+!days.expired &&
+days.number <=7;
+
+
+}
+
+
+
+if(currentFilter==="upcoming"){
+
+
+filterMatch =
+!days.expired;
+
+
+}
+
+
+
+return searchMatch && filterMatch;
+
+
 
 });
 
@@ -192,56 +369,99 @@ modal.classList.add(
 
 
 
-// Save Data
+filtered.sort(
+(a,b)=>{
 
-function saveData(){
 
-localStorage.setItem(
-"reminders",
-JSON.stringify(reminders)
-);
+if(currentSort==="nearest"){
+
+
+return new Date(a.dueDate)
+-
+new Date(b.dueDate);
+
 
 }
 
 
 
+if(currentSort==="furthest"){
 
 
-// Display Cards
-
-function displayReminders(){
-
-
-reminderContainer.innerHTML = "";
+return new Date(b.dueDate)
+-
+new Date(a.dueDate);
 
 
+}
 
-if(reminders.length === 0){
+
+
+if(currentSort==="az"){
+
+
+return a.title.localeCompare(
+b.title
+);
+
+
+}
+
+
+
+if(currentSort==="newest"){
+
+
+return b.id-a.id;
+
+
+}
+
+
+
+});
+
+
+
+
+
+
+if(filtered.length===0){
 
 
 reminderContainer.innerHTML = `
 
+
 <div class="empty-state">
 
-<h2>No Reminders Yet</h2>
+<h2>
+No Reminders Found
+</h2>
+
 
 <p>
-Click + to add your first reminder.
+Add a reminder to get started.
 </p>
 
 </div>
 
+
 `;
 
+
 return;
+
 
 }
 
 
 
 
-reminders.forEach(
+
+
+filtered.forEach(
 reminder=>{
+
 
 
 const days =
@@ -258,22 +478,28 @@ let status =
 
 if(days.expired){
 
+
 status =
 "expired";
 
+
 }
 
-else if(days.number <= 7){
+else if(days.number <=7){
+
 
 status =
 "urgent";
 
+
 }
 
-else if(days.number <= 30){
+else if(days.number <=30){
+
 
 status =
 "warning";
+
 
 }
 
@@ -296,7 +522,6 @@ status;
 
 
 
-// THIS CREATES THE CARD CONTENT
 
 card.innerHTML = `
 
@@ -317,7 +542,6 @@ ${reminder.title}
 
 
 
-
 <p>
 
 <strong>Due:</strong>
@@ -327,7 +551,6 @@ reminder.dueDate
 )}
 
 </p>
-
 
 
 
@@ -375,6 +598,7 @@ Delete
 
 
 
+
 reminderContainer.appendChild(
 card
 );
@@ -384,13 +608,17 @@ card
 });
 
 
+
 }
 
 
 
 
 
-// Edit Reminder
+
+
+// ================= EDIT =================
+
 
 function editReminder(id){
 
@@ -398,50 +626,34 @@ function editReminder(id){
 const reminder =
 reminders.find(
 item =>
-item.id === id
+item.id===id
 );
 
 
 
-if(!reminder){
-
+if(!reminder)
 return;
 
-}
 
 
-
-
-document.getElementById(
-"category"
-).value =
+document.getElementById("category").value =
 reminder.category;
 
 
-
-document.getElementById(
-"title"
-).value =
+document.getElementById("title").value =
 reminder.title;
 
 
-
-document.getElementById(
-"dueDate"
-).value =
+document.getElementById("dueDate").value =
 reminder.dueDate;
 
 
-
-document.getElementById(
-"notes"
-).value =
+document.getElementById("notes").value =
 reminder.notes;
 
 
 
-editingId =
-id;
+editingId = id;
 
 
 
@@ -457,7 +669,10 @@ modal.classList.remove(
 
 
 
-// Delete Reminder
+
+
+// ================= DELETE =================
+
 
 function deleteReminder(id){
 
@@ -470,17 +685,20 @@ confirm(
 ){
 
 
+
 reminders =
 reminders.filter(
 item =>
-item.id !== id
+item.id!==id
 );
 
 
 
 saveData();
 
+
 displayReminders();
+
 
 updateDashboard();
 
@@ -495,18 +713,20 @@ updateDashboard();
 
 
 
-// Calculate Days
+
+
+// ================= DATE =================
+
 
 function calculateDays(date){
+
 
 
 const today =
 new Date();
 
 
-today.setHours(
-0,0,0,0
-);
+today.setHours(0,0,0,0);
 
 
 
@@ -514,14 +734,12 @@ const expiry =
 new Date(date);
 
 
-expiry.setHours(
-0,0,0,0
-);
+expiry.setHours(0,0,0,0);
 
 
 
 const difference =
-expiry - today;
+expiry-today;
 
 
 
@@ -533,15 +751,19 @@ difference /
 
 
 
-if(days < 0){
+
+if(days<0){
 
 
 return {
 
+
 number:
 Math.abs(days),
 
+
 expired:true,
+
 
 text:
 "Expired "
@@ -550,6 +772,7 @@ Math.abs(days)
 +
 " days ago"
 
+
 };
 
 
@@ -557,34 +780,45 @@ Math.abs(days)
 
 
 
-if(days === 0){
+
+
+if(days===0){
 
 
 return {
 
+
 number:0,
 
+
 expired:false,
+
 
 text:
 "Expires Today"
 
+
 };
 
 
 }
+
 
 
 
 return {
 
+
 number:days,
+
 
 expired:false,
 
+
 text:
-days +
+days+
 " Days Remaining"
+
 
 };
 
@@ -595,7 +829,10 @@ days +
 
 
 
-// Format Date
+
+
+// ================= DATE FORMAT =================
+
 
 function formatDate(date){
 
@@ -623,16 +860,18 @@ year:"numeric"
 
 
 
-// Dashboard
+
+// ================= DASHBOARD =================
+
 
 function updateDashboard(){
 
 
-let expired = 0;
+let expired=0;
 
-let week = 0;
+let week=0;
 
-let month = 0;
+let month=0;
 
 
 
@@ -640,7 +879,7 @@ reminders.forEach(
 reminder=>{
 
 
-const result =
+let result =
 calculateDays(
 reminder.dueDate
 );
@@ -653,13 +892,13 @@ expired++;
 
 }
 
-else if(result.number <= 7){
+else if(result.number<=7){
 
 week++;
 
 }
 
-else if(result.number <= 30){
+else if(result.number<=30){
 
 month++;
 
@@ -667,6 +906,7 @@ month++;
 
 
 });
+
 
 
 
@@ -697,13 +937,76 @@ document.getElementById(
 expired;
 
 
+
 }
 
 
 
 
 
-// Clear Form
+
+
+// ================= SEARCH FILTER SORT =================
+
+
+searchInput.addEventListener(
+"input",
+()=>{
+
+
+searchText =
+searchInput.value
+.toLowerCase();
+
+
+
+displayReminders();
+
+
+});
+
+
+
+
+filterSelect.addEventListener(
+"change",
+()=>{
+
+
+currentFilter =
+filterSelect.value;
+
+
+displayReminders();
+
+
+});
+
+
+
+
+sortSelect.addEventListener(
+"change",
+()=>{
+
+
+currentSort =
+sortSelect.value;
+
+
+displayReminders();
+
+
+});
+
+
+
+
+
+
+
+// ================= CLEAR FORM =================
+
 
 function clearForm(){
 
@@ -730,8 +1033,11 @@ document.getElementById(
 
 
 
-// Start App
+
+// ================= START =================
+
 
 displayReminders();
+
 
 updateDashboard();

@@ -62,18 +62,23 @@ Remindo
 
 <button 
 class="icon-btn"
-onclick="requestNotificationPermission()">
+id="notificationBtn">
 
 🔔
 
 </button>
 
 
-<button class="icon-btn">
+
+
+<button 
+class="icon-btn"
+id="settingsBtn">
 
 ⚙️
 
 </button>
+
 
 
 </div>
@@ -122,7 +127,6 @@ all in one place.
 <section class="stats">
 
 
-
 <div class="stat-card">
 
 <h3>
@@ -134,7 +138,6 @@ Total
 </span>
 
 </div>
-
 
 
 
@@ -154,7 +157,6 @@ Due This Week
 
 
 
-
 <div class="stat-card">
 
 <h3>
@@ -166,7 +168,6 @@ Due This Month
 </span>
 
 </div>
-
 
 
 
@@ -186,7 +187,6 @@ Expired
 
 
 </section>
-
 
 
 
@@ -216,22 +216,30 @@ placeholder="Search reminders..."
 
 
 <option value="all">
+
 All Reminders
+
 </option>
 
 
 <option value="upcoming">
+
 Upcoming
+
 </option>
 
 
 <option value="urgent">
+
 Due Within 7 Days
+
 </option>
 
 
 <option value="expired">
+
 Expired
+
 </option>
 
 
@@ -247,22 +255,30 @@ Expired
 
 
 <option value="nearest">
+
 Nearest Due
+
 </option>
 
 
 <option value="furthest">
+
 Furthest Due
+
 </option>
 
 
 <option value="az">
+
 A-Z
+
 </option>
 
 
 <option value="newest">
+
 Newest Added
+
 </option>
 
 
@@ -278,6 +294,7 @@ Newest Added
 
 
 
+
 <section id="reminderContainer">
 
 
@@ -285,12 +302,16 @@ Newest Added
 
 
 <h2>
+
 No Reminders Yet
+
 </h2>
 
 
 <p>
+
 Click + to add your first reminder.
+
 </p>
 
 
@@ -348,7 +369,9 @@ class="modal hidden"
 
 
 <h2>
+
 Add Reminder
+
 </h2>
 
 
@@ -399,6 +422,8 @@ Category
 <option>Tax / VAT</option>
 
 <option>Medical</option>
+
+<option>Medical Insurance</option>
 
 <option>Dental</option>
 
@@ -468,6 +493,95 @@ type="date"
 id="dueDate"
 
 >
+
+
+</label>
+
+
+
+
+
+
+
+
+<label>
+
+Reminder Alert
+
+
+<select id="alertTime">
+
+
+<option value="0">
+
+On Due Date
+
+</option>
+
+
+<option value="1">
+
+1 Day Before
+
+</option>
+
+
+<option value="7">
+
+7 Days Before
+
+</option>
+
+
+<option value="30">
+
+30 Days Before
+
+</option>
+
+
+</select>
+
+
+</label>
+
+
+
+
+
+
+
+
+<label>
+
+Repeat
+
+
+<select id="repeat">
+
+
+<option value="none">
+
+Does Not Repeat
+
+</option>
+
+
+<option value="yearly">
+
+Every Year
+
+</option>
+
+
+<option value="monthly">
+
+Every Month
+
+</option>
+
+
+</select>
 
 
 </label>

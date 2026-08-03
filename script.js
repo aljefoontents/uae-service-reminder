@@ -415,7 +415,6 @@ ${days.text}
 
 
 ${
-
 reminder.notes
 
 ?
@@ -812,7 +811,7 @@ const icons={
 
 "Vehicle Registration":"🚗",
 
-"Vehicle Insurance":"🛡️",
+"Vehicle Insurance":"🚗",
 
 "Driving Licence":"🚘",
 
@@ -838,7 +837,7 @@ const icons={
 
 "Tax / VAT":"💰",
 
-"Medical":"⚕️",
+"Medical":"💉",
 
 "Dental":"🦷",
 
@@ -850,7 +849,7 @@ const icons={
 
 "Warranty":"🔧",
 
-"Insurance":"🛡️",
+"Insurance":"🖊️",
 
 "Appointments":"📅",
 

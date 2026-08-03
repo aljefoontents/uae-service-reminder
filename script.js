@@ -1766,3 +1766,27 @@ if(settingsBtn){
     });
 
 }
+
+// =====================================================
+// CALENDAR BUTTON
+// =====================================================
+
+
+const calendarBtn =
+document.getElementById("calendarBtn");
+
+
+
+if(calendarBtn){
+
+
+calendarBtn.addEventListener("click",()=>{
+
+
+window.location.href="calendar.html";
+
+
+});
+
+
+}

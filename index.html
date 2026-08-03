@@ -9,30 +9,21 @@
 
 
 <title>
-Remindo | Never Miss What Matters.
+Remindo | Never Miss What Matters
 </title>
 
 
 <meta name="description"
-content="Remindo helps you track renewals, documents, subscriptions, maintenance and important dates in one place.">
+content="Remindo is a smart reminder app to manage renewals, documents, subscriptions, maintenance and important dates.">
 
 
 <meta name="theme-color" content="#0F4C81">
 
 
-<link rel="icon" type="image/png" href="favicon.png">
-
-
-<link rel="apple-touch-icon" href="icon-512.png">
+<link rel="icon" href="favicon.png" type="image/png">
 
 
 <link rel="manifest" href="manifest.json">
-
-
-<meta name="apple-mobile-web-app-capable" content="yes">
-
-
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
 
 
 <link rel="stylesheet" href="style.css">
@@ -43,7 +34,6 @@ content="Remindo helps you track renewals, documents, subscriptions, maintenance
 
 
 <body>
-
 
 
 <header class="header">
@@ -67,7 +57,6 @@ id="notificationBtn">
 🔔
 
 </button>
-
 
 
 
@@ -106,12 +95,10 @@ Never Miss What Matters.
 </h1>
 
 
-
 <p>
 
-Track renewals, documents, subscriptions,
-maintenance, appointments and important dates
-all in one place.
+Manage renewals, documents, subscriptions,
+maintenance and important dates in one simple app.
 
 </p>
 
@@ -129,13 +116,9 @@ all in one place.
 
 <div class="stat-card">
 
-<h3>
-Total
-</h3>
+<h3>Total</h3>
 
-<span id="totalCount">
-0
-</span>
+<span id="totalCount">0</span>
 
 </div>
 
@@ -144,43 +127,33 @@ Total
 
 <div class="stat-card">
 
-<h3>
-Due This Week
-</h3>
+<h3>Due This Week</h3>
 
-<span id="weekCount">
-0
-</span>
+<span id="weekCount">0</span>
 
 </div>
 
 
 
 
+
 <div class="stat-card">
 
-<h3>
-Due This Month
-</h3>
+<h3>Due This Month</h3>
 
-<span id="monthCount">
-0
-</span>
+<span id="monthCount">0</span>
 
 </div>
 
 
 
 
+
 <div class="stat-card">
 
-<h3>
-Expired
-</h3>
+<h3>Expired</h3>
 
-<span id="expiredCount">
-0
-</span>
+<span id="expiredCount">0</span>
 
 </div>
 
@@ -195,15 +168,16 @@ Expired
 
 
 
+
 <section class="toolbar">
 
 
 
 <input
 
-type="text"
-
 id="searchInput"
+
+type="text"
 
 placeholder="Search reminders..."
 
@@ -222,18 +196,21 @@ All Reminders
 </option>
 
 
-<option value="upcoming">
-
-Upcoming
-
-</option>
-
 
 <option value="urgent">
 
 Due Within 7 Days
 
 </option>
+
+
+
+<option value="upcoming">
+
+Upcoming
+
+</option>
+
 
 
 <option value="expired">
@@ -261,11 +238,13 @@ Nearest Due
 </option>
 
 
+
 <option value="furthest">
 
 Furthest Due
 
 </option>
+
 
 
 <option value="az">
@@ -275,6 +254,7 @@ A-Z
 </option>
 
 
+
 <option value="newest">
 
 Newest Added
@@ -282,12 +262,13 @@ Newest Added
 </option>
 
 
+
 </select>
 
 
 
-</section>
 
+</section>
 
 
 
@@ -318,7 +299,6 @@ Click + to add your first reminder.
 </div>
 
 
-
 </section>
 
 
@@ -339,9 +319,7 @@ Click + to add your first reminder.
 
 id="addReminderBtn"
 
-aria-label="Add Reminder"
-
->
+class="add-btn">
 
 +
 
@@ -355,13 +333,14 @@ aria-label="Add Reminder"
 
 
 
+<!-- ADD REMINDER MODAL -->
+
+
 <div
 
 id="modal"
 
-class="modal hidden"
-
->
+class="modal hidden">
 
 
 <div class="modal-content">
@@ -373,6 +352,8 @@ class="modal hidden"
 Add Reminder
 
 </h2>
+
+
 
 
 
@@ -393,11 +374,13 @@ Category
 
 <option>National ID</option>
 
+
 <option>Vehicle Registration</option>
 
 <option>Vehicle Insurance</option>
 
 <option>Driving Licence</option>
+
 
 <option>Trade Licence</option>
 
@@ -405,9 +388,11 @@ Category
 
 <option>Company Documents</option>
 
+
 <option>Employee Documents</option>
 
 <option>Contract Renewal</option>
+
 
 <option>Property / Lease</option>
 
@@ -415,11 +400,13 @@ Category
 
 <option>Utilities</option>
 
+
 <option>Subscriptions</option>
 
 <option>Banking / Finance</option>
 
 <option>Tax / VAT</option>
+
 
 <option>Medical</option>
 
@@ -427,9 +414,11 @@ Category
 
 <option>Dental</option>
 
+
 <option>Education</option>
 
 <option>Travel</option>
+
 
 <option>Memberships</option>
 
@@ -437,9 +426,11 @@ Category
 
 <option>Insurance</option>
 
+
 <option>Appointments</option>
 
 <option>Personal</option>
+
 
 <option>Other</option>
 
@@ -456,6 +447,7 @@ Category
 
 
 
+
 <label>
 
 Title
@@ -463,16 +455,17 @@ Title
 
 <input
 
-type="text"
-
 id="title"
 
-placeholder="Enter reminder title"
+type="text"
+
+placeholder="Reminder title"
 
 >
 
 
 </label>
+
 
 
 
@@ -488,14 +481,15 @@ Due Date
 
 <input
 
-type="date"
-
 id="dueDate"
+
+type="date"
 
 >
 
 
 </label>
+
 
 
 
@@ -519,11 +513,13 @@ On Due Date
 </option>
 
 
+
 <option value="1">
 
 1 Day Before
 
 </option>
+
 
 
 <option value="7">
@@ -533,6 +529,7 @@ On Due Date
 </option>
 
 
+
 <option value="30">
 
 30 Days Before
@@ -540,10 +537,12 @@ On Due Date
 </option>
 
 
+
 </select>
 
 
 </label>
+
 
 
 
@@ -567,12 +566,6 @@ Does Not Repeat
 </option>
 
 
-<option value="yearly">
-
-Every Year
-
-</option>
-
 
 <option value="monthly">
 
@@ -581,10 +574,20 @@ Every Month
 </option>
 
 
+
+<option value="yearly">
+
+Every Year
+
+</option>
+
+
+
 </select>
 
 
 </label>
+
 
 
 
@@ -602,7 +605,7 @@ Notes
 
 id="notes"
 
-placeholder="Optional notes"
+placeholder="Add notes (optional)"
 
 ></textarea>
 
@@ -629,17 +632,15 @@ Cancel
 
 
 
-
 <button id="saveReminder">
 
-Save
+Save Reminder
 
 </button>
 
 
 
 </div>
-
 
 
 
@@ -680,8 +681,8 @@ Never Miss What Matters.
 
 
 
-<script src="script.js"></script>
 
+<script src="script.js"></script>
 
 
 
@@ -691,14 +692,10 @@ Never Miss What Matters.
 <script>
 
 
-if ("serviceWorker" in navigator) {
+if("serviceWorker" in navigator){
 
 
-window.addEventListener(
-
-"load",
-
-()=>{
+window.addEventListener("load",()=>{
 
 
 navigator.serviceWorker.register(
@@ -712,7 +709,7 @@ navigator.serviceWorker.register(
 
 console.log(
 
-"Remindo offline mode enabled"
+"Remindo offline enabled"
 
 );
 
@@ -724,7 +721,7 @@ console.log(
 
 console.log(
 
-"Service Worker Error:",
+"Service Worker error",
 
 error
 
@@ -740,15 +737,12 @@ error
 }
 
 
-
 </script>
 
 
 
 
 
-
 </body>
-
 
 </html>

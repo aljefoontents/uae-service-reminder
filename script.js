@@ -1,5 +1,5 @@
 /* =====================================================
-   REMINDO v1.0
+   REMINDO v1.1
    Never Miss What Matters.
 ===================================================== */
 
@@ -18,42 +18,24 @@ let currentSort = "nearest";
 
 
 
-
 // ELEMENTS
 
-const addBtn =
-document.getElementById("addReminderBtn");
+const addBtn = document.getElementById("addReminderBtn");
+const modal = document.getElementById("modal");
+const cancelBtn = document.getElementById("cancelReminder");
+const saveBtn = document.getElementById("saveReminder");
+const reminderContainer = document.getElementById("reminderContainer");
 
-const modal =
-document.getElementById("modal");
-
-const cancelBtn =
-document.getElementById("cancelReminder");
-
-const saveBtn =
-document.getElementById("saveReminder");
-
-const reminderContainer =
-document.getElementById("reminderContainer");
-
-const searchInput =
-document.getElementById("searchInput");
-
-const filterSelect =
-document.getElementById("filterSelect");
-
-const sortSelect =
-document.getElementById("sortSelect");
-
+const searchInput = document.getElementById("searchInput");
+const filterSelect = document.getElementById("filterSelect");
+const sortSelect = document.getElementById("sortSelect");
 
 
 
 
 // OPEN MODAL
 
-addBtn.addEventListener(
-"click",
-()=>{
+addBtn.addEventListener("click",()=>{
 
 editingId = null;
 
@@ -68,9 +50,7 @@ modal.classList.remove("hidden");
 
 // CLOSE MODAL
 
-cancelBtn.addEventListener(
-"click",
-()=>{
+cancelBtn.addEventListener("click",()=>{
 
 modal.classList.add("hidden");
 
@@ -82,9 +62,7 @@ modal.classList.add("hidden");
 
 // SAVE REMINDER
 
-saveBtn.addEventListener(
-"click",
-()=>{
+saveBtn.addEventListener("click",()=>{
 
 
 const category =
@@ -118,25 +96,18 @@ return;
 if(editingId){
 
 
-reminders =
-reminders.map(item =>
+reminders = reminders.map(item =>
 
 item.id === editingId
 
 ?
 
 {
-
 ...item,
-
 category,
-
 title,
-
 dueDate,
-
 notes
-
 }
 
 :
@@ -153,7 +124,7 @@ else{
 
 reminders.push({
 
-id: Date.now(),
+id:Date.now(),
 
 category,
 
@@ -163,18 +134,13 @@ dueDate,
 
 notes,
 
-created:
-new Date().toISOString()
+created:new Date().toISOString()
 
 });
 
 
 }
 
-
-
-
-editingId = null;
 
 
 saveData();
@@ -185,8 +151,9 @@ updateDashboard();
 
 clearForm();
 
-
 modal.classList.add("hidden");
+
+editingId = null;
 
 
 });
@@ -213,6 +180,7 @@ JSON.stringify(reminders)
 
 
 
+
 // DISPLAY REMINDERS
 
 function displayReminders(){
@@ -222,90 +190,55 @@ reminderContainer.innerHTML = "";
 
 
 
-let filtered = reminders.filter(
-reminder=>{
+let filtered = reminders.filter(reminder=>{
 
 
 const days =
-calculateDays(
-reminder.dueDate
-);
+calculateDays(reminder.dueDate);
 
 
-
-// SEARCH
 
 let searchMatch =
 
-reminder.title
-.toLowerCase()
-.includes(searchText)
+reminder.title.toLowerCase().includes(searchText)
 
 ||
 
-reminder.category
-.toLowerCase()
-.includes(searchText)
+reminder.category.toLowerCase().includes(searchText)
 
 ||
 
-reminder.notes
-.toLowerCase()
-.includes(searchText);
+reminder.notes.toLowerCase().includes(searchText);
 
 
-
-
-
-// FILTER FIXED
 
 let filterMatch = true;
 
 
 
-if(currentFilter === "expired"){
+if(currentFilter==="expired"){
 
-
-filterMatch =
-days.expired;
-
+filterMatch = days.expired;
 
 }
 
 
-else if(currentFilter === "urgent"){
 
+else if(currentFilter==="urgent"){
 
 filterMatch =
-
 !days.expired &&
-
-days.number >= 0 &&
-
 days.number <= 7;
 
-
 }
 
 
-else if(currentFilter === "upcoming"){
 
+else if(currentFilter==="upcoming"){
 
 filterMatch =
-
 !days.expired &&
-
 days.number > 7;
-
-
-}
-
-
-else if(currentFilter === "all"){
-
-
-filterMatch = true;
-
 
 }
 
@@ -324,50 +257,33 @@ return searchMatch && filterMatch;
 
 // SORT
 
-filtered.sort(
-(a,b)=>{
+filtered.sort((a,b)=>{
 
 
 if(currentSort==="nearest"){
 
-
-return new Date(a.dueDate)
--
-new Date(b.dueDate);
-
+return new Date(a.dueDate)-new Date(b.dueDate);
 
 }
 
 
 if(currentSort==="furthest"){
 
-
-return new Date(b.dueDate)
--
-new Date(a.dueDate);
-
+return new Date(b.dueDate)-new Date(a.dueDate);
 
 }
-
 
 
 if(currentSort==="az"){
 
-
-return a.title.localeCompare(
-b.title
-);
-
+return a.title.localeCompare(b.title);
 
 }
 
 
-
 if(currentSort==="newest"){
 
-
 return b.id-a.id;
-
 
 }
 
@@ -380,28 +296,22 @@ return b.id-a.id;
 
 
 
-if(filtered.length === 0){
+if(filtered.length===0){
 
 
 reminderContainer.innerHTML = `
 
 <div class="empty-state">
 
-<h2>
-No Reminders Found
-</h2>
+<h2>No Reminders Found</h2>
 
-<p>
-Try changing your filter.
-</p>
+<p>Add a reminder to get started.</p>
 
 </div>
 
 `;
 
-
 return;
-
 
 }
 
@@ -411,39 +321,34 @@ return;
 
 
 
-filtered.forEach(
-reminder=>{
+filtered.forEach(reminder=>{
 
 
 const days =
-calculateDays(
-reminder.dueDate
-);
+calculateDays(reminder.dueDate);
 
 
 
-let status = "safe";
-
+let status="safe";
 
 
 if(days.expired){
 
-status = "expired";
+status="expired";
 
 }
 
-else if(days.number <=7){
+else if(days.number<=7){
 
-status = "urgent";
-
-}
-
-else if(days.number <=30){
-
-status = "warning";
+status="urgent";
 
 }
 
+else if(days.number<=30){
+
+status="warning";
+
+}
 
 
 
@@ -453,10 +358,8 @@ const card =
 document.createElement("div");
 
 
-
 card.className =
-"reminder-card " + status;
-
+"reminder-card "+status;
 
 
 
@@ -464,11 +367,24 @@ card.className =
 card.innerHTML = `
 
 
+<div class="card-header">
+
+
+<span class="category-icon">
+
+${getCategoryIcon(reminder.category)}
+
+</span>
+
+
 <span class="category">
 
 ${reminder.category}
 
 </span>
+
+
+</div>
 
 
 
@@ -482,7 +398,7 @@ ${reminder.title}
 
 <p>
 
-<strong>Due:</strong>
+<strong>📅 Due:</strong>
 
 ${formatDate(reminder.dueDate)}
 
@@ -499,6 +415,7 @@ ${days.text}
 
 
 ${
+
 reminder.notes
 
 ?
@@ -535,7 +452,6 @@ Delete
 reminderContainer.appendChild(card);
 
 
-
 });
 
 
@@ -553,13 +469,11 @@ function editReminder(id){
 
 
 const reminder =
-reminders.find(
-item=>item.id===id
-);
+reminders.find(item=>item.id===id);
 
 
 
-if(!reminder) return;
+if(!reminder)return;
 
 
 
@@ -580,7 +494,7 @@ reminder.notes;
 
 
 
-editingId = id;
+editingId=id;
 
 
 modal.classList.remove("hidden");
@@ -603,10 +517,7 @@ if(confirm("Delete this reminder?")){
 
 
 reminders =
-reminders.filter(
-item=>item.id!==id
-);
-
+reminders.filter(item=>item.id!==id);
 
 
 saveData();
@@ -618,7 +529,6 @@ updateDashboard();
 
 }
 
-
 }
 
 
@@ -627,40 +537,34 @@ updateDashboard();
 
 
 
-// DATE CALCULATION
+// DATE
 
 function calculateDays(date){
 
 
-const today =
-new Date();
+const today = new Date();
 
 today.setHours(0,0,0,0);
 
 
-
-const expiry =
-new Date(date);
+const expiry = new Date(date);
 
 expiry.setHours(0,0,0,0);
 
 
 
 const difference =
-expiry - today;
-
+expiry-today;
 
 
 const days =
 Math.ceil(
-difference /
-(1000*60*60*24)
+difference/(1000*60*60*24)
 );
 
 
 
-
-if(days < 0){
+if(days<0){
 
 
 return {
@@ -670,9 +574,7 @@ number:Math.abs(days),
 expired:true,
 
 text:
-"Expired " +
-Math.abs(days) +
-" days ago"
+"Expired "+Math.abs(days)+" days ago"
 
 };
 
@@ -681,7 +583,8 @@ Math.abs(days) +
 
 
 
-if(days === 0){
+
+if(days===0){
 
 
 return {
@@ -707,8 +610,7 @@ number:days,
 expired:false,
 
 text:
-days +
-" Days Remaining"
+days+" Days Remaining"
 
 };
 
@@ -721,24 +623,19 @@ days +
 
 
 
+
 // DATE FORMAT
 
 function formatDate(date){
 
 
-return new Date(date)
-.toLocaleDateString(
+return new Date(date).toLocaleDateString(
 "en-GB",
 {
-
 day:"2-digit",
-
 month:"long",
-
 year:"numeric"
-
 }
-
 );
 
 
@@ -755,22 +652,19 @@ year:"numeric"
 function updateDashboard(){
 
 
-let expired = 0;
+let expired=0;
 
-let week = 0;
+let week=0;
 
-let month = 0;
+let month=0;
 
 
 
-reminders.forEach(
-reminder=>{
+reminders.forEach(reminder=>{
 
 
 const result =
-calculateDays(
-reminder.dueDate
-);
+calculateDays(reminder.dueDate);
 
 
 
@@ -780,13 +674,13 @@ expired++;
 
 }
 
-else if(result.number <=7){
+else if(result.number<=7){
 
 week++;
 
 }
 
-else if(result.number <=30){
+else if(result.number<=30){
 
 month++;
 
@@ -794,7 +688,6 @@ month++;
 
 
 });
-
 
 
 
@@ -824,9 +717,7 @@ expired;
 
 // SEARCH
 
-searchInput.addEventListener(
-"input",
-()=>{
+searchInput.addEventListener("input",()=>{
 
 
 searchText =
@@ -843,11 +734,10 @@ displayReminders();
 
 
 
+
 // FILTER
 
-filterSelect.addEventListener(
-"change",
-()=>{
+filterSelect.addEventListener("change",()=>{
 
 
 currentFilter =
@@ -867,9 +757,7 @@ displayReminders();
 
 // SORT
 
-sortSelect.addEventListener(
-"change",
-()=>{
+sortSelect.addEventListener("change",()=>{
 
 
 currentSort =
@@ -894,9 +782,7 @@ function clearForm(){
 
 document.getElementById("title").value="";
 
-
 document.getElementById("dueDate").value="";
-
 
 document.getElementById("notes").value="";
 
@@ -909,7 +795,86 @@ document.getElementById("notes").value="";
 
 
 
-// START APP
+
+// CATEGORY ICONS
+
+function getCategoryIcon(category){
+
+
+const icons={
+
+
+"Passport":"🛂",
+
+"Visa / Residency":"🛂",
+
+"National ID":"🪪",
+
+"Vehicle Registration":"🚗",
+
+"Vehicle Insurance":"🛡️",
+
+"Driving Licence":"🚘",
+
+"Trade Licence":"🏢",
+
+"Business Permit":"📄",
+
+"Company Documents":"🏭",
+
+"Employee Documents":"👤",
+
+"Contract Renewal":"📝",
+
+"Property / Lease":"🏠",
+
+"Home Maintenance":"🔧",
+
+"Utilities":"💡",
+
+"Subscriptions":"🔄",
+
+"Banking / Finance":"💳",
+
+"Tax / VAT":"💰",
+
+"Medical":"⚕️",
+
+"Dental":"🦷",
+
+"Education":"🎓",
+
+"Travel":"✈️",
+
+"Memberships":"⭐",
+
+"Warranty":"🔧",
+
+"Insurance":"🛡️",
+
+"Appointments":"📅",
+
+"Personal":"👤",
+
+"Other":"📌"
+
+
+};
+
+
+return icons[category] || "📌";
+
+
+}
+
+
+
+
+
+
+
+
+// START
 
 displayReminders();
 

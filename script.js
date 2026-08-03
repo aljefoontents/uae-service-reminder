@@ -1501,39 +1501,23 @@ alert(
 
 
 const settingsBtn =
-
 document.getElementById("settingsBtn");
-
-
 
 
 
 if(settingsBtn){
 
 
-
 settingsBtn.addEventListener("click",()=>{
 
 
-
-alert(
-
-"Settings panel coming soon ⚙️"
-
-);
-
+window.location.href = "settings.html";
 
 
 });
 
 
-
 }
-
-
-
-
-
 
 
 

@@ -1,12 +1,11 @@
 /* =====================================================
-   REMINDO v1.0
+   REMINDO v1.1
    Never Miss What Matters.
    Complete Stylesheet
-   ===================================================== */
+===================================================== */
 
 
-/* ================= RESET ================= */
-
+/* RESET */
 
 *{
 
@@ -22,7 +21,6 @@
 
 :root{
 
-
     --primary:#0F4C81;
 
     --secondary:#2ECC71;
@@ -31,19 +29,18 @@
 
     --danger:#E74C3C;
 
-    --light:#F4F7FB;
+    --background:#F4F7FB;
 
-    --dark:#222;
+    --text:#222;
 
     --border:#ddd;
 
-    --radius:16px;
+    --card-radius:18px;
 
     --shadow:
-    0 10px 25px rgba(0,0,0,0.08);
+    0 8px 25px rgba(0,0,0,0.08);
 
 }
-
 
 
 
@@ -57,12 +54,10 @@ body{
     sans-serif;
 
 
-    background:
-    var(--light);
+    background:var(--background);
 
 
-    color:
-    var(--dark);
+    color:var(--text);
 
 
     min-height:100vh;
@@ -73,14 +68,16 @@ body{
 
 
 
-/* ================= HEADER ================= */
+
+
+
+/* HEADER */
 
 
 .header{
 
 
-    background:
-    var(--primary);
+    background:var(--primary);
 
 
     color:white;
@@ -98,27 +95,20 @@ body{
     align-items:center;
 
 
-    box-shadow:
-    var(--shadow);
-
-
 }
-
 
 
 
 .logo{
 
 
-    font-size:28px;
+    font-size:30px;
 
 
     font-weight:700;
 
 
 }
-
-
 
 
 
@@ -132,7 +122,6 @@ body{
 
 
 }
-
 
 
 
@@ -165,7 +154,7 @@ body{
 
 
 
-/* ================= MAIN ================= */
+/* MAIN */
 
 
 main{
@@ -188,7 +177,7 @@ main{
 
 
 
-/* ================= HERO ================= */
+/* HERO */
 
 
 .hero{
@@ -203,7 +192,7 @@ main{
     text-align:center;
 
 
-    border-radius:var(--radius);
+    border-radius:var(--card-radius);
 
 
     box-shadow:var(--shadow);
@@ -213,7 +202,6 @@ main{
 
 
 }
-
 
 
 
@@ -230,7 +218,6 @@ main{
 
 
 }
-
 
 
 
@@ -251,7 +238,7 @@ main{
 
 
 
-/* ================= DASHBOARD ================= */
+/* DASHBOARD */
 
 
 .stats{
@@ -274,7 +261,6 @@ main{
 
 
 
-
 .stat-card{
 
 
@@ -287,14 +273,13 @@ main{
     text-align:center;
 
 
-    border-radius:var(--radius);
+    border-radius:var(--card-radius);
 
 
     box-shadow:var(--shadow);
 
 
 }
-
 
 
 
@@ -308,7 +293,6 @@ main{
 
 
 }
-
 
 
 
@@ -332,7 +316,7 @@ main{
 
 
 
-/* ================= TOOLBAR ================= */
+/* TOOLBAR */
 
 
 .toolbar{
@@ -344,14 +328,13 @@ main{
     gap:15px;
 
 
-    margin-bottom:25px;
-
-
     flex-wrap:wrap;
 
 
-}
+    margin-bottom:30px;
 
+
+}
 
 
 
@@ -360,23 +343,22 @@ main{
 .toolbar select{
 
 
+    background:white;
+
+
+    border:1px solid var(--border);
+
+
     padding:14px;
 
 
     border-radius:12px;
 
 
-    border:1px solid var(--border);
-
-
     font-size:16px;
 
 
-    background:white;
-
-
 }
-
 
 
 
@@ -394,7 +376,7 @@ main{
 
 
 
-/* ================= REMINDER AREA ================= */
+/* REMINDER GRID */
 
 
 #reminderContainer{
@@ -418,7 +400,7 @@ main{
 
 
 
-/* ================= EMPTY STATE ================= */
+/* EMPTY */
 
 
 .empty-state{
@@ -433,7 +415,7 @@ main{
     text-align:center;
 
 
-    border-radius:var(--radius);
+    border-radius:var(--card-radius);
 
 
     box-shadow:var(--shadow);
@@ -459,7 +441,237 @@ main{
 
 
 
-/* ================= FLOAT BUTTON ================= */
+/* REMINDER CARD */
+
+
+.reminder-card{
+
+
+    background:white;
+
+
+    padding:25px;
+
+
+    border-radius:var(--card-radius);
+
+
+    box-shadow:var(--shadow);
+
+
+    border-left:8px solid var(--primary);
+
+
+    transition:.25s;
+
+
+}
+
+
+
+.reminder-card:hover{
+
+
+    transform:translateY(-5px);
+
+
+}
+
+
+
+
+
+
+.reminder-card.safe{
+
+
+    border-left-color:var(--secondary);
+
+
+}
+
+
+
+.reminder-card.warning{
+
+
+    border-left-color:var(--warning);
+
+
+}
+
+
+
+.reminder-card.urgent{
+
+
+    border-left-color:var(--danger);
+
+
+}
+
+
+
+.reminder-card.expired{
+
+
+    border-left-color:#555;
+
+
+}
+
+
+
+
+
+
+.card-header{
+
+
+    display:flex;
+
+
+    align-items:center;
+
+
+    gap:10px;
+
+
+    margin-bottom:15px;
+
+
+}
+
+
+
+
+.category-icon{
+
+
+    font-size:28px;
+
+
+}
+
+
+
+
+.category{
+
+
+    background:#EAF2FF;
+
+
+    color:var(--primary);
+
+
+    padding:6px 12px;
+
+
+    border-radius:20px;
+
+
+    font-size:13px;
+
+
+    font-weight:600;
+
+
+}
+
+
+
+
+
+.reminder-card h2{
+
+
+    color:var(--primary);
+
+
+    margin-bottom:15px;
+
+
+}
+
+
+
+
+.reminder-card h3{
+
+
+    font-size:22px;
+
+
+    margin:15px 0;
+
+
+}
+
+
+
+
+.reminder-card p{
+
+
+    color:#555;
+
+
+    margin-bottom:10px;
+
+
+}
+
+
+
+
+
+
+.reminder-card button{
+
+
+    border:none;
+
+
+    padding:10px 18px;
+
+
+    border-radius:10px;
+
+
+    cursor:pointer;
+
+
+    margin-right:8px;
+
+
+    background:var(--primary);
+
+
+    color:white;
+
+
+}
+
+
+
+
+
+.reminder-card button:last-child{
+
+
+    background:var(--danger);
+
+
+}
+
+
+
+
+
+
+
+/* ADD BUTTON */
 
 
 #addReminderBtn{
@@ -498,21 +710,10 @@ main{
     cursor:pointer;
 
 
-    display:flex;
-
-
-    align-items:center;
-
-
-    justify-content:center;
-
-
-    box-shadow:
-    0 10px 25px rgba(0,0,0,.25);
+    box-shadow:0 10px 25px rgba(0,0,0,.25);
 
 
 }
-
 
 
 
@@ -530,7 +731,7 @@ main{
 
 
 
-/* ================= MODAL ================= */
+/* MODAL */
 
 
 .modal{
@@ -542,17 +743,16 @@ main{
     inset:0;
 
 
-    background:
-    rgba(0,0,0,.45);
+    background:rgba(0,0,0,.45);
 
 
     display:flex;
 
 
-    justify-content:center;
-
-
     align-items:center;
+
+
+    justify-content:center;
 
 
     padding:20px;
@@ -590,12 +790,10 @@ main{
     max-width:500px;
 
 
-    border-radius:var(--radius);
+    border-radius:var(--card-radius);
 
 
 }
-
-
 
 
 
@@ -643,9 +841,6 @@ main{
     font-size:16px;
 
 
-    font-family:inherit;
-
-
 }
 
 
@@ -679,8 +874,6 @@ main{
 
 
 
-
-
 .modal-buttons button{
 
 
@@ -699,12 +892,7 @@ main{
     cursor:pointer;
 
 
-    font-weight:600;
-
-
 }
-
-
 
 
 
@@ -718,7 +906,6 @@ main{
 
 
 }
-
 
 
 
@@ -736,209 +923,7 @@ main{
 
 
 
-/* ================= REMINDER CARDS ================= */
-
-
-.reminder-card{
-
-
-    background:white;
-
-
-    padding:25px;
-
-
-    border-radius:var(--radius);
-
-
-    box-shadow:var(--shadow);
-
-
-    border-left:8px solid var(--primary);
-
-
-    transition:.25s;
-
-
-}
-
-
-
-
-.reminder-card:hover{
-
-
-    transform:translateY(-5px);
-
-
-}
-
-
-
-
-
-.reminder-card.safe{
-
-
-    border-left-color:#2ECC71;
-
-
-}
-
-
-
-
-.reminder-card.warning{
-
-
-    border-left-color:#F1C40F;
-
-
-}
-
-
-
-
-.reminder-card.urgent{
-
-
-    border-left-color:#E74C3C;
-
-
-}
-
-
-
-
-.reminder-card.expired{
-
-
-    border-left-color:#555;
-
-
-}
-
-
-
-
-
-.category{
-
-
-    display:inline-block;
-
-
-    background:#eaf2ff;
-
-
-    color:var(--primary);
-
-
-    padding:5px 12px;
-
-
-    border-radius:20px;
-
-
-    font-size:13px;
-
-
-    font-weight:600;
-
-
-}
-
-
-
-
-.reminder-card h2{
-
-
-    color:var(--primary);
-
-
-    margin:12px 0;
-
-
-}
-
-
-
-
-
-.reminder-card h3{
-
-
-    margin:15px 0;
-
-
-    font-size:22px;
-
-
-}
-
-
-
-
-
-.reminder-card p{
-
-
-    margin-bottom:8px;
-
-
-    color:#555;
-
-
-}
-
-
-
-
-.reminder-card button{
-
-
-    padding:10px 18px;
-
-
-    border:none;
-
-
-    border-radius:8px;
-
-
-    cursor:pointer;
-
-
-    margin-right:8px;
-
-
-    color:white;
-
-
-    background:var(--primary);
-
-
-}
-
-
-
-
-.reminder-card button:last-child{
-
-
-    background:var(--danger);
-
-
-}
-
-
-
-
-
-
-
-/* ================= FOOTER ================= */
+/* FOOTER */
 
 
 footer{
@@ -961,11 +946,10 @@ footer{
 
 
 
-/* ================= MOBILE ================= */
+/* MOBILE */
 
 
 @media(max-width:600px){
-
 
 
 .header{
@@ -981,11 +965,10 @@ footer{
 .logo{
 
 
-    font-size:22px;
+    font-size:24px;
 
 
 }
-
 
 
 
@@ -999,7 +982,6 @@ main{
 
 
 
-
 .hero{
 
 
@@ -1007,7 +989,6 @@ main{
 
 
 }
-
 
 
 
@@ -1021,7 +1002,6 @@ main{
 
 
 
-
 #reminderContainer{
 
 
@@ -1029,7 +1009,6 @@ main{
 
 
 }
-
 
 
 

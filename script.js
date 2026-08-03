@@ -1,5 +1,6 @@
 /* =====================================================
-   REMINDO v1.4
+   REMINDO v1.5
+   Smart Reminder Engine
    Never Miss What Matters.
 ===================================================== */
 
@@ -21,8 +22,11 @@ let currentSort = "nearest";
 // ELEMENTS
 
 const addBtn = document.getElementById("addReminderBtn");
+
 const modal = document.getElementById("modal");
+
 const cancelBtn = document.getElementById("cancelReminder");
+
 const saveBtn = document.getElementById("saveReminder");
 
 const reminderContainer =
@@ -40,15 +44,17 @@ document.getElementById("sortSelect");
 
 
 
-// OPEN MODAL
+// OPEN ADD REMINDER
 
 addBtn.addEventListener("click",()=>{
+
 
 editingId = null;
 
 clearForm();
 
 modal.classList.remove("hidden");
+
 
 });
 
@@ -59,9 +65,12 @@ modal.classList.remove("hidden");
 
 cancelBtn.addEventListener("click",()=>{
 
+
 modal.classList.add("hidden");
 
+
 });
+
 
 
 
@@ -90,13 +99,38 @@ document.getElementById("notes").value.trim();
 
 
 
+const alertTime =
+document.getElementById("alertTime")
+?
+document.getElementById("alertTime").value
+:
+0;
+
+
+
+const repeat =
+document.getElementById("repeat")
+?
+document.getElementById("repeat").value
+:
+"none";
+
+
+
+
+
 if(title === "" || dueDate === ""){
+
 
 alert("Please enter title and due date");
 
 return;
 
+
 }
+
+
+
 
 
 
@@ -104,27 +138,41 @@ return;
 if(editingId){
 
 
-reminders = reminders.map(item =>
+reminders =
+reminders.map(item=>{
 
 
-item.id === editingId
+if(item.id===editingId){
 
-?
 
-{
+return {
+
+
 ...item,
+
 category,
+
 title,
+
 dueDate,
-notes
+
+notes,
+
+alertTime,
+
+repeat
+
+
+};
+
+
 }
 
-:
 
-item
+return item;
 
 
-);
+});
 
 
 }
@@ -133,6 +181,7 @@ else{
 
 
 reminders.push({
+
 
 id:Date.now(),
 
@@ -144,26 +193,40 @@ dueDate,
 
 notes,
 
+alertTime,
+
+repeat,
+
 created:new Date().toISOString()
+
 
 });
 
 
 }
+
+
+
 
 
 
 saveData();
 
+
 displayReminders();
+
 
 updateDashboard();
 
+
 clearForm();
+
 
 modal.classList.add("hidden");
 
+
 editingId=null;
+
 
 
 });
@@ -174,14 +237,20 @@ editingId=null;
 
 
 
-// STORAGE
+
+// SAVE DATA
 
 function saveData(){
 
+
 localStorage.setItem(
+
 "reminders",
+
 JSON.stringify(reminders)
+
 );
+
 
 }
 
@@ -193,7 +262,7 @@ JSON.stringify(reminders)
 
 
 
-// DISPLAY
+// DISPLAY REMINDERS
 
 function displayReminders(){
 
@@ -212,15 +281,23 @@ calculateDays(reminder.dueDate);
 
 let searchMatch =
 
-reminder.title.toLowerCase().includes(searchText)
+reminder.title
+.toLowerCase()
+.includes(searchText)
 
 ||
 
-reminder.category.toLowerCase().includes(searchText)
+reminder.category
+.toLowerCase()
+.includes(searchText)
 
 ||
 
-reminder.notes.toLowerCase().includes(searchText);
+reminder.notes
+.toLowerCase()
+.includes(searchText);
+
+
 
 
 
@@ -230,10 +307,12 @@ let filterMatch=true;
 
 if(currentFilter==="expired"){
 
-filterMatch=days.expired;
+
+filterMatch =
+days.expired;
+
 
 }
-
 
 
 else if(currentFilter==="urgent"){
@@ -245,7 +324,6 @@ days.number<=7;
 
 
 }
-
 
 
 else if(currentFilter==="upcoming"){
@@ -260,6 +338,7 @@ days.number>7;
 
 
 
+
 return searchMatch && filterMatch;
 
 
@@ -270,40 +349,56 @@ return searchMatch && filterMatch;
 
 
 
-// SORT
 
 filtered.sort((a,b)=>{
 
 
 if(currentSort==="nearest"){
 
-return new Date(a.dueDate)-new Date(b.dueDate);
+
+return new Date(a.dueDate)
+-
+new Date(b.dueDate);
+
 
 }
+
 
 
 if(currentSort==="furthest"){
 
-return new Date(b.dueDate)-new Date(a.dueDate);
+
+return new Date(b.dueDate)
+-
+new Date(a.dueDate);
+
 
 }
+
 
 
 if(currentSort==="az"){
 
+
 return a.title.localeCompare(b.title);
 
+
 }
+
 
 
 if(currentSort==="newest"){
 
+
 return b.id-a.id;
+
 
 }
 
 
+
 });
+
 
 
 
@@ -325,6 +420,7 @@ reminderContainer.innerHTML=`
 </div>
 
 `;
+
 
 return;
 
@@ -348,23 +444,31 @@ calculateDays(reminder.dueDate);
 let status="safe";
 
 
+
 if(days.expired){
 
+
 status="expired";
+
 
 }
 
 else if(days.number<=7){
 
+
 status="urgent";
+
 
 }
 
 else if(days.number<=30){
 
+
 status="warning";
 
+
 }
+
 
 
 
@@ -405,11 +509,7 @@ ${reminder.category}
 
 
 
-<h2>
-
-${reminder.title}
-
-</h2>
+<h2>${reminder.title}</h2>
 
 
 
@@ -469,585 +569,8 @@ Delete
 reminderContainer.appendChild(card);
 
 
-});
-
-
-}
-
-
-
-
-
-
-
-// EDIT
-
-function editReminder(id){
-
-
-const reminder =
-reminders.find(item=>item.id===id);
-
-
-
-if(!reminder)return;
-
-
-
-document.getElementById("category").value =
-reminder.category;
-
-
-document.getElementById("title").value =
-reminder.title;
-
-
-document.getElementById("dueDate").value =
-reminder.dueDate;
-
-
-document.getElementById("notes").value =
-reminder.notes;
-
-
-
-editingId=id;
-
-
-modal.classList.remove("hidden");
-
-
-}
-
-
-
-
-
-
-
-// DELETE
-
-function deleteReminder(id){
-
-
-if(confirm("Delete this reminder?")){
-
-
-reminders =
-reminders.filter(item=>item.id!==id);
-
-
-saveData();
-
-displayReminders();
-
-updateDashboard();
-
-
-}
-
-}
-
-
-
-
-
-
-
-// DATE CALCULATION
-
-function calculateDays(date){
-
-
-const today =
-new Date();
-
-today.setHours(0,0,0,0);
-
-
-
-const expiry =
-new Date(date);
-
-expiry.setHours(0,0,0,0);
-
-
-
-const difference =
-expiry-today;
-
-
-
-const days =
-Math.ceil(
-difference/(1000*60*60*24)
-);
-
-
-
-if(days<0){
-
-
-return{
-
-number:Math.abs(days),
-
-expired:true,
-
-text:
-"Expired "+
-Math.abs(days)+
-" days ago"
-
-};
-
-
-}
-
-
-
-if(days===0){
-
-
-return{
-
-number:0,
-
-expired:false,
-
-text:"Expires Today"
-
-};
-
-
-}
-
-
-
-return{
-
-number:days,
-
-expired:false,
-
-text:
-days+
-" Days Remaining"
-
-};
-
-
-}
-
-
-
-
-
-
-
-
-// FORMAT DATE
-
-function formatDate(date){
-
-
-return new Date(date).toLocaleDateString(
-"en-GB",
-{
-
-day:"2-digit",
-
-month:"long",
-
-year:"numeric"
-
-}
-
-);
-
-
-}
-
-
-
-
-
-
-
-// DASHBOARD
-
-function updateDashboard(){
-
-
-let expired=0;
-
-let week=0;
-
-let month=0;
-
-
-
-reminders.forEach(reminder=>{
-
-
-const result =
-calculateDays(reminder.dueDate);
-
-
-
-if(result.expired){
-
-expired++;
-
-}
-
-else if(result.number<=7){
-
-week++;
-
-}
-
-else if(result.number<=30){
-
-month++;
-
-}
-
-
-});
-
-
-
-document.getElementById("totalCount").innerText =
-reminders.length;
-
-
-document.getElementById("weekCount").innerText =
-week;
-
-
-document.getElementById("monthCount").innerText =
-month;
-
-
-document.getElementById("expiredCount").innerText =
-expired;
-
-
-}
-
-
-
-
-
-
-
-// SEARCH
-
-searchInput.addEventListener("input",()=>{
-
-
-searchText =
-searchInput.value.toLowerCase();
-
-
-displayReminders();
-
-
-});
-
-
-
-
-
-
-// FILTER
-
-filterSelect.addEventListener("change",()=>{
-
-
-currentFilter =
-filterSelect.value;
-
-
-displayReminders();
-
-
-});
-
-
-
-
-
-
-// SORT
-
-sortSelect.addEventListener("change",()=>{
-
-
-currentSort =
-sortSelect.value;
-
-
-displayReminders();
-
-
-});
-
-
-
-
-
-
-
-// CLEAR FORM
-
-function clearForm(){
-
-
-document.getElementById("title").value="";
-
-document.getElementById("dueDate").value="";
-
-document.getElementById("notes").value="";
-
-
-}
-
-
-
-
-
-
-
-
-// CATEGORY ICONS
-
-function getCategoryIcon(category){
-
-
-const icons={
-
-
-"Passport":"🛂",
-
-"Visa / Residency":"🛂",
-
-"National ID":"🪪",
-
-"Vehicle Registration":"🚗",
-
-"Vehicle Insurance":"🚗",
-
-"Driving Licence":"🚘",
-
-"Trade Licence":"🏢",
-
-"Business Permit":"📄",
-
-"Company Documents":"🏭",
-
-"Employee Documents":"👤",
-
-"Contract Renewal":"📝",
-
-"Property / Lease":"🏠",
-
-"Home Maintenance":"🔧",
-
-"Utilities":"💡",
-
-"Subscriptions":"🔄",
-
-"Banking / Finance":"💳",
-
-"Tax / VAT":"💰",
-
-"Medical":"💉",
-
-"Dental":"🦷",
-
-"Education":"🎓",
-
-"Travel":"✈️",
-
-"Memberships":"⭐",
-
-"Warranty":"🔧",
-
-"Insurance":"🖊️",
-
-"Appointments":"📅",
-
-"Personal":"👤",
-
-"Other":"📌"
-
-
-};
-
-
-return icons[category] || "📌";
-
-
-}
-
-
-
-
-
-
-
-
-// =====================================================
-// NOTIFICATIONS v1.4
-// =====================================================
-
-
-
-function requestNotificationPermission(){
-
-
-if("Notification" in window){
-
-
-Notification.requestPermission()
-
-.then(permission=>{
-
-
-if(permission==="granted"){
-
-
-console.log(
-"Remindo notifications enabled"
-);
-
-
-checkReminders();
-
-
-}
-
 
 });
 
 
 }
-
-
-}
-
-
-
-
-
-
-function checkReminders(){
-
-
-const today =
-new Date();
-
-
-
-reminders.forEach(reminder=>{
-
-
-const due =
-new Date(reminder.dueDate);
-
-
-
-const difference =
-Math.ceil(
-
-(due-today)
-
-/
-
-(1000*60*60*24)
-
-);
-
-
-
-
-if(difference===1){
-
-
-sendNotification(
-
-"Reminder Tomorrow",
-
-reminder.title+
-" is due tomorrow"
-
-);
-
-
-}
-
-
-
-
-if(difference<0){
-
-
-sendNotification(
-
-"Reminder Expired",
-
-reminder.title+
-" has expired"
-
-);
-
-
-}
-
-
-
-});
-
-
-}
-
-
-
-
-
-
-function sendNotification(title,message){
-
-
-if(Notification.permission==="granted"){
-
-
-new Notification(title,{
-
-body:message,
-
-icon:"icon-512.png"
-
-});
-
-
-}
-
-
-}
-
-
-
-
-
-
-
-// START APP
-
-displayReminders();
-
-updateDashboard();
-
-requestNotificationPermission();

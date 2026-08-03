@@ -56,12 +56,15 @@ Remindo
 </div>
 
 
+
 <div class="header-actions">
 
 
-<button class="icon-btn">
+<button 
+class="icon-btn"
+onclick="requestNotificationPermission()">
 
-ℹ️
+🔔
 
 </button>
 
@@ -83,6 +86,7 @@ Remindo
 
 
 
+
 <main>
 
 
@@ -95,6 +99,7 @@ Remindo
 Never Miss What Matters.
 
 </h1>
+
 
 
 <p>
@@ -113,51 +118,77 @@ all in one place.
 
 
 
+
 <section class="stats">
 
 
 
 <div class="stat-card">
 
-<h3>Total</h3>
+<h3>
+Total
+</h3>
 
-<span id="totalCount">0</span>
-
-</div>
-
-
-
-<div class="stat-card">
-
-<h3>Due This Week</h3>
-
-<span id="weekCount">0</span>
+<span id="totalCount">
+0
+</span>
 
 </div>
 
 
 
+
+
 <div class="stat-card">
 
-<h3>Due This Month</h3>
+<h3>
+Due This Week
+</h3>
 
-<span id="monthCount">0</span>
+<span id="weekCount">
+0
+</span>
 
 </div>
 
 
 
+
+
 <div class="stat-card">
 
-<h3>Expired</h3>
+<h3>
+Due This Month
+</h3>
 
-<span id="expiredCount">0</span>
+<span id="monthCount">
+0
+</span>
+
+</div>
+
+
+
+
+
+<div class="stat-card">
+
+<h3>
+Expired
+</h3>
+
+<span id="expiredCount">
+0
+</span>
 
 </div>
 
 
 
 </section>
+
+
+
 
 
 
@@ -210,6 +241,8 @@ Expired
 
 
 
+
+
 <select id="sortSelect">
 
 
@@ -238,6 +271,7 @@ Newest Added
 
 
 </section>
+
 
 
 
@@ -279,6 +313,7 @@ Click + to add your first reminder.
 
 
 
+
 <button
 
 id="addReminderBtn"
@@ -290,6 +325,7 @@ aria-label="Add Reminder"
 +
 
 </button>
+
 
 
 
@@ -330,81 +366,55 @@ Category
 
 <option>Passport</option>
 
-
 <option>Visa / Residency</option>
-
 
 <option>National ID</option>
 
-
 <option>Vehicle Registration</option>
-
 
 <option>Vehicle Insurance</option>
 
-
 <option>Driving Licence</option>
-
 
 <option>Trade Licence</option>
 
-
 <option>Business Permit</option>
-
 
 <option>Company Documents</option>
 
-
 <option>Employee Documents</option>
-
 
 <option>Contract Renewal</option>
 
-
 <option>Property / Lease</option>
-
 
 <option>Home Maintenance</option>
 
-
 <option>Utilities</option>
-
 
 <option>Subscriptions</option>
 
-
 <option>Banking / Finance</option>
-
 
 <option>Tax / VAT</option>
 
-
 <option>Medical</option>
-
 
 <option>Dental</option>
 
-
 <option>Education</option>
-
 
 <option>Travel</option>
 
-
 <option>Memberships</option>
-
 
 <option>Warranty</option>
 
-
 <option>Insurance</option>
-
 
 <option>Appointments</option>
 
-
 <option>Personal</option>
-
 
 <option>Other</option>
 
@@ -505,11 +515,13 @@ Cancel
 
 
 
+
 <button id="saveReminder">
 
 Save
 
 </button>
+
 
 
 </div>
@@ -560,6 +572,8 @@ Never Miss What Matters.
 
 
 
+
+
 <script>
 
 
@@ -567,19 +581,25 @@ if ("serviceWorker" in navigator) {
 
 
 window.addEventListener(
+
 "load",
+
 ()=>{
 
 
 navigator.serviceWorker.register(
+
 "service-worker.js"
+
 )
 
 .then(()=>{
 
 
 console.log(
+
 "Remindo offline mode enabled"
+
 );
 
 
@@ -589,8 +609,11 @@ console.log(
 
 
 console.log(
+
 "Service Worker Error:",
+
 error
+
 );
 
 
@@ -601,6 +624,7 @@ error
 
 
 }
+
 
 
 </script>

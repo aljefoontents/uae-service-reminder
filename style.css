@@ -1258,150 +1258,65 @@ cursor:pointer;
    CALENDAR GRID
 ===================================================== */
 
-
-.weekdays{
-
-
-display:grid;
-
-grid-template-columns:
-
-repeat(7,1fr);
-
-text-align:center;
-
-font-weight:bold;
-
-margin-bottom:10px;
-
-color:var(--primary);
-
-
+.weekdays {
+    display: grid !important;
+    grid-template-columns: repeat(7, minmax(0, 1fr)) !important;
+    width: 100%;
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: var(--primary);
+    box-sizing: border-box;
 }
 
-
-
-
-
-.calendar-grid{
-
-
-display:grid;
-
-grid-template-columns:
-
-repeat(7,1fr);
-
-gap:8px;
-
-
+.calendar-grid {
+    display: grid !important;
+    grid-template-columns: repeat(7, minmax(0, 1fr)) !important;
+    width: 100%;
+    gap: 8px;
+    box-sizing: border-box;
 }
 
+.calendar-day {
+    min-height: 80px;
+    width: 100%;
+    box-sizing: border-box;
 
+    background: #f8f9fb;
+    border-radius: 12px;
+    padding: 10px;
 
-
-
-.calendar-day{
-
-
-min-height:80px;
-
-background:#f8f9fb;
-
-border-radius:12px;
-
-padding:10px;
-
-cursor:pointer;
-
-position:relative;
-
-transition:.2s;
-
-
+    cursor: pointer;
+    position: relative;
+    transition: 0.2s;
 }
 
-
-
-
-
-.calendar-day:hover{
-
-
-transform:scale(1.03);
-
-background:#eef5ff;
-
-
+.calendar-day:hover {
+    transform: scale(1.03);
+    background: #eef5ff;
 }
 
-
-
-
-
-.calendar-day span{
-
-
-font-weight:bold;
-
-
+.calendar-day span {
+    font-weight: bold;
 }
 
-
-
-
-
-.calendar-day small{
-
-
-position:absolute;
-
-bottom:8px;
-
-left:50%;
-
-transform:translateX(-50%);
-
-font-size:18px;
-
-color:var(--primary);
-
-
+.calendar-day small {
+    position: absolute;
+    bottom: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 18px;
+    color: var(--primary);
 }
 
-
-
-
-
-.calendar-day.has-reminder{
-
-
-border:2px solid var(--primary);
-
-
+.calendar-day.has-reminder {
+    border: 2px solid var(--primary);
 }
 
-
-
-
-
-.calendar-day.empty{
-
-
-background:transparent;
-
-cursor:default;
-
-
+.calendar-day.empty {
+    background: transparent;
+    cursor: default;
 }
-
-
-
-
-
-
-
-
 /* =====================================================
    UPCOMING REMINDERS
 ===================================================== */

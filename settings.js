@@ -1,5 +1,5 @@
 // =====================================================
-// REMINDO v1.6
+// REMINDO v1.7
 // SETTINGS ENGINE
 // =====================================================
 
@@ -8,463 +8,379 @@
 // DARK MODE
 // =====================================================
 
-
 const darkModeToggle =
-document.getElementById("darkModeToggle");
+    document.getElementById("darkModeToggle");
 
 
+// Apply saved theme immediately
 
-if(localStorage.getItem("darkMode") === "enabled"){
+function applyTheme() {
 
+    const darkMode =
+        localStorage.getItem("darkMode") === "enabled";
 
-document.body.classList.add("dark");
+    document.body.classList.toggle(
+        "dark",
+        darkMode
+    );
 
+    if (darkModeToggle) {
 
-if(darkModeToggle){
+        darkModeToggle.checked =
+            darkMode;
 
-darkModeToggle.checked = true;
-
-}
-
-
-}
-
-
-
-
-if(darkModeToggle){
-
-
-darkModeToggle.addEventListener("change",()=>{
-
-
-if(darkModeToggle.checked){
-
-
-document.body.classList.add("dark");
-
-
-localStorage.setItem(
-"darkMode",
-"enabled"
-);
-
-
-}
-
-else{
-
-
-document.body.classList.remove("dark");
-
-
-localStorage.setItem(
-"darkMode",
-"disabled"
-);
-
+    }
 
 }
 
 
+// Apply saved theme when Settings opens
 
-});
+applyTheme();
 
+
+// Dark mode toggle
+
+if (darkModeToggle) {
+
+    darkModeToggle.addEventListener(
+        "change",
+        () => {
+
+            if (darkModeToggle.checked) {
+
+                localStorage.setItem(
+                    "darkMode",
+                    "enabled"
+                );
+
+            }
+
+            else {
+
+                localStorage.setItem(
+                    "darkMode",
+                    "disabled"
+                );
+
+            }
+
+
+            applyTheme();
+
+        }
+    );
 
 }
-
-
-
-
-
-
 
 
 // =====================================================
 // NOTIFICATIONS
 // =====================================================
 
-
 const notificationToggle =
-document.getElementById("notificationToggle");
+    document.getElementById(
+        "notificationToggle"
+    );
 
 
+if (
+    "Notification" in window &&
+    Notification.permission === "granted"
+) {
 
+    if (notificationToggle) {
 
+        notificationToggle.checked =
+            true;
 
-if(Notification.permission==="granted"){
-
-
-if(notificationToggle){
-
-notificationToggle.checked=true;
-
-}
-
-
-}
-
-
-
-
-
-
-
-if(notificationToggle){
-
-
-notificationToggle.addEventListener("change",()=>{
-
-
-if(notificationToggle.checked){
-
-
-
-if("Notification" in window){
-
-
-
-Notification.requestPermission()
-
-.then(permission=>{
-
-
-if(permission==="granted"){
-
-
-alert(
-"Notifications enabled 🔔"
-);
-
-
-}
-
-else{
-
-
-notificationToggle.checked=false;
-
+    }
 
 }
 
 
+if (notificationToggle) {
 
-});
+    notificationToggle.addEventListener(
+        "change",
+        () => {
 
+            if (notificationToggle.checked) {
+
+                if ("Notification" in window) {
+
+                    Notification.requestPermission()
+                        .then(permission => {
+
+                            if (
+                                permission ===
+                                "granted"
+                            ) {
+
+                                alert(
+                                    "Notifications enabled 🔔"
+                                );
+
+                            }
+
+                            else {
+
+                                notificationToggle.checked =
+                                    false;
+
+                            }
+
+                        });
+
+                }
+
+            }
+
+            else {
+
+                alert(
+                    "Notifications cannot be disabled from the browser. You can manage them in browser settings."
+                );
+
+                notificationToggle.checked =
+                    true;
+
+            }
+
+        }
+    );
 
 }
-
-
-
-}
-
-else{
-
-
-alert(
-"Notifications cannot be disabled from the browser. You can manage them in browser settings."
-);
-
-
-}
-
-
-
-});
-
-
-}
-
-
-
-
-
-
-
-
 
 
 // =====================================================
 // EXPORT BACKUP
 // =====================================================
 
-
 const exportBtn =
-document.getElementById("exportBtn");
+    document.getElementById(
+        "exportBtn"
+    );
 
 
+if (exportBtn) {
 
-if(exportBtn){
+    exportBtn.addEventListener(
+        "click",
+        () => {
 
-
-
-exportBtn.addEventListener("click",()=>{
-
-
-
-const data =
-
-localStorage.getItem("reminders");
+            const data =
+                localStorage.getItem(
+                    "reminders"
+                ) || "[]";
 
 
+            const blob =
+                new Blob(
+                    [data],
+                    {
+                        type:
+                            "application/json"
+                    }
+                );
 
 
-
-const blob =
-
-new Blob(
-
-[data],
-
-{
-type:"application/json"
-}
-
-);
+            const url =
+                URL.createObjectURL(
+                    blob
+                );
 
 
+            const link =
+                document.createElement(
+                    "a"
+                );
 
 
+            link.href =
+                url;
 
-const url =
-
-URL.createObjectURL(blob);
-
-
-
+            link.download =
+                "remindo-backup.json";
 
 
+            document.body.appendChild(
+                link
+            );
 
-const link =
+            link.click();
 
-document.createElement("a");
-
-
-
-link.href=url;
-
-
-link.download="remindo-backup.json";
+            document.body.removeChild(
+                link
+            );
 
 
-link.click();
+            URL.revokeObjectURL(
+                url
+            );
 
 
+            alert(
+                "Backup exported successfully ✅"
+            );
 
-
-
-URL.revokeObjectURL(url);
-
-
-
-alert(
-"Backup exported successfully ✅"
-);
-
-
-
-});
-
+        }
+    );
 
 }
-
-
-
-
-
-
-
 
 
 // =====================================================
 // IMPORT BACKUP
 // =====================================================
 
-
 const importBtn =
-document.getElementById("importBtn");
-
+    document.getElementById(
+        "importBtn"
+    );
 
 const importFile =
-document.getElementById("importFile");
+    document.getElementById(
+        "importFile"
+    );
 
 
+if (importBtn && importFile) {
 
+    importBtn.addEventListener(
+        "click",
+        () => {
 
+            importFile.click();
 
-
-if(importBtn){
-
-
-
-importBtn.addEventListener("click",()=>{
-
-
-importFile.click();
-
-
-});
-
+        }
+    );
 
 }
 
 
+if (importFile) {
+
+    importFile.addEventListener(
+        "change",
+        event => {
+
+            const file =
+                event.target.files[0];
 
 
+            if (!file) {
+
+                return;
+
+            }
 
 
-
-if(importFile){
-
-
-
-importFile.addEventListener("change",(event)=>{
+            const reader =
+                new FileReader();
 
 
+            reader.onload =
+                function (e) {
 
-const file =
-event.target.files[0];
+                    try {
 
-
-
-if(!file) return;
-
-
-
-
-
-const reader =
-new FileReader();
+                        const data =
+                            JSON.parse(
+                                e.target.result
+                            );
 
 
+                        if (
+                            !Array.isArray(data)
+                        ) {
+
+                            throw new Error(
+                                "Invalid backup format"
+                            );
+
+                        }
 
 
-
-reader.onload=function(e){
-
-
-
-try{
+                        localStorage.setItem(
+                            "reminders",
+                            JSON.stringify(data)
+                        );
 
 
-const data =
-
-JSON.parse(e.target.result);
-
-
+                        alert(
+                            "Backup restored successfully ✅"
+                        );
 
 
+                    }
 
-localStorage.setItem(
+                    catch (error) {
 
-"reminders",
+                        alert(
+                            "Invalid backup file ❌"
+                        );
 
-JSON.stringify(data)
+                        console.error(
+                            error
+                        );
 
-);
+                    }
 
-
-
-
-
-alert(
-"Backup restored successfully ✅"
-);
-
+                };
 
 
+            reader.readAsText(
+                file
+            );
+
+        }
+    );
 
 }
-
-catch{
-
-
-alert(
-"Invalid backup file ❌"
-);
-
-
-}
-
-
-
-};
-
-
-
-
-
-reader.readAsText(file);
-
-
-
-});
-
-
-
-}
-
-
-
-
-
-
-
 
 
 // =====================================================
 // DELETE ALL REMINDERS
 // =====================================================
 
-
 const clearBtn =
-document.getElementById("clearBtn");
+    document.getElementById(
+        "clearBtn"
+    );
 
 
+if (clearBtn) {
+
+    clearBtn.addEventListener(
+        "click",
+        () => {
+
+            const confirmDelete =
+                confirm(
+                    "Are you sure you want to delete all reminders?"
+                );
 
 
+            if (confirmDelete) {
 
-if(clearBtn){
-
-
-
-clearBtn.addEventListener("click",()=>{
-
+                localStorage.removeItem(
+                    "reminders"
+                );
 
 
-const confirmDelete =
+                alert(
+                    "All reminders deleted."
+                );
 
-confirm(
+            }
 
-"Are you sure you want to delete all reminders?"
-
-);
-
-
-
-
-
-if(confirmDelete){
-
-
-
-localStorage.removeItem(
-"reminders"
-);
-
-
-
-alert(
-"All reminders deleted."
-);
-
-
+        }
+    );
 
 }
 
 
-
-});
-
-
-}
+// =====================================================
+// REMINDO SETTINGS ENGINE COMPLETE
+// =====================================================

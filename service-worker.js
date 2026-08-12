@@ -7,20 +7,15 @@
 const CACHE_NAME = "remindo-v1.7";
 
 const FILES_TO_CACHE = [
-    "./",
-    "./index.html",
-    "./style.css",
-    "./script.js",
-    "./settings.html",
-    "./settings.js",
-    "./calendar.html",
-    "./calendar.js",
-    "./manifest.json",
-
-    "./icon-192.png",
-    "./icon-512.png",
-    "./icon-512-maskable.png",
-    "./favicon.png"
+  "./",
+  "./index.html",
+  "./style.css",
+  "./script.js",
+  "./manifest.json",
+  "./icon-192.png",
+  "./icon-512.png",
+  "./icon-512-maskable.png",
+  "./favicon.png"
 ];
 
 

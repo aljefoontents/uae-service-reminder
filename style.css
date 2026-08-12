@@ -649,27 +649,39 @@ color:white;
 
 
 .add-btn {
-    font-size: 0;
-}
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
 
-.add-btn::before,
-.add-btn::after {
-    content: "";
-    position: absolute;
-    background: white;
-    border-radius: 2px;
-}
+    width: 60px;
+    height: 60px;
 
-.add-btn::before {
-    width: 24px;
-    height: 3px;
-}
+    border-radius: 50%;
+    border: none;
 
-.add-btn::after {
-    width: 3px;
-    height: 24px;
-}
+    background: var(--primary);
+    color: white;
 
+    font-size: 35px;
+    font-family: Arial, sans-serif;
+    font-weight: 400;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+    margin: 0;
+
+    line-height: 60px;
+    text-align: center;
+
+    cursor: pointer;
+
+    box-shadow: 0 5px 15px rgba(0,0,0,0.25);
+
+    z-index: 50;
+}
 /* =====================================================
    MODAL
 ===================================================== */

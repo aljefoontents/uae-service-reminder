@@ -6,6 +6,22 @@
 
 "use strict";
 
+// =====================================================
+// GLOBAL THEME
+// =====================================================
+
+(function () {
+
+    const darkMode =
+        localStorage.getItem("darkMode") === "enabled";
+
+    if (darkMode) {
+
+        document.body.classList.add("dark");
+
+    }
+
+})();
 
 /* =====================================================
    STORAGE

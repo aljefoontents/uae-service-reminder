@@ -1,25 +1,32 @@
 /* =====================================================
-   REMINDO v1.6
-   Service Worker
+   REMINDO v1.7
+   SERVICE WORKER
    Never Miss What Matters.
 ===================================================== */
 
-const CACHE_NAME = "remindo-v1.6";
+const CACHE_NAME = "remindo-v1.7";
 
 const FILES_TO_CACHE = [
     "./",
     "./index.html",
     "./style.css",
     "./script.js",
+    "./settings.html",
+    "./settings.js",
+    "./calendar.html",
+    "./calendar.js",
     "./manifest.json",
+
+    "./icon-192.png",
     "./icon-512.png",
+    "./icon-512-maskable.png",
     "./favicon.png"
 ];
 
 
-// =====================================================
-// INSTALL SERVICE WORKER
-// =====================================================
+/* =====================================================
+   INSTALL
+===================================================== */
 
 self.addEventListener("install", event => {
 
@@ -27,7 +34,11 @@ self.addEventListener("install", event => {
 
         caches.open(CACHE_NAME)
             .then(cache => {
-                return cache.addAll(FILES_TO_CACHE);
+
+                return cache.addAll(
+                    FILES_TO_CACHE
+                );
+
             })
 
     );
@@ -37,9 +48,9 @@ self.addEventListener("install", event => {
 });
 
 
-// =====================================================
-// ACTIVATE SERVICE WORKER
-// =====================================================
+/* =====================================================
+   ACTIVATE
+===================================================== */
 
 self.addEventListener("activate", event => {
 
@@ -52,8 +63,14 @@ self.addEventListener("activate", event => {
 
                     cacheNames.map(cache => {
 
-                        if (cache !== CACHE_NAME) {
-                            return caches.delete(cache);
+                        if (
+                            cache !== CACHE_NAME
+                        ) {
+
+                            return caches.delete(
+                                cache
+                            );
+
                         }
 
                     })
@@ -62,24 +79,32 @@ self.addEventListener("activate", event => {
 
             })
 
-            .then(() => self.clients.claim())
+            .then(() => {
+
+                return self.clients.claim();
+
+            })
 
     );
 
 });
 
 
-// =====================================================
-// FETCH
-// NETWORK FIRST
-// =====================================================
+/* =====================================================
+   FETCH
+   NETWORK FIRST
+===================================================== */
 
 self.addEventListener("fetch", event => {
 
-    // Only handle GET requests
-    if (event.request.method !== "GET") {
+    if (
+        event.request.method !== "GET"
+    ) {
+
         return;
+
     }
+
 
     event.respondWith(
 
@@ -87,13 +112,27 @@ self.addEventListener("fetch", event => {
 
             .then(response => {
 
-                // Save the newest version in cache
-                const responseClone = response.clone();
+                if (
+                    response &&
+                    response.status === 200
+                ) {
 
-                caches.open(CACHE_NAME)
-                    .then(cache => {
-                        cache.put(event.request, responseClone);
-                    });
+                    const responseClone =
+                        response.clone();
+
+
+                    caches.open(CACHE_NAME)
+                        .then(cache => {
+
+                            cache.put(
+                                event.request,
+                                responseClone
+                            );
+
+                        });
+
+                }
+
 
                 return response;
 
@@ -101,8 +140,9 @@ self.addEventListener("fetch", event => {
 
             .catch(() => {
 
-                // If offline, use cached version
-                return caches.match(event.request);
+                return caches.match(
+                    event.request
+                );
 
             })
 
@@ -111,67 +151,152 @@ self.addEventListener("fetch", event => {
 });
 
 
-// =====================================================
-// PUSH NOTIFICATIONS
-// =====================================================
+/* =====================================================
+   PUSH NOTIFICATIONS
+===================================================== */
 
-self.addEventListener("push", event => {
+self.addEventListener(
+    "push",
+    event => {
 
-    let data = {
-        title: "Remindo Reminder",
-        message: "You have an upcoming reminder."
-    };
+        let data = {
 
-    if (event.data) {
+            title:
+                "Remindo Reminder",
 
-        try {
-            data = event.data.json();
-        } catch (error) {
-            console.log("Push data error:", error);
+            message:
+                "You have an upcoming reminder."
+
+        };
+
+
+        if (event.data) {
+
+            try {
+
+                data =
+                    event.data.json();
+
+            }
+
+            catch (error) {
+
+                console.log(
+                    "Push data error:",
+                    error
+                );
+
+            }
+
         }
 
+
+        const options = {
+
+            body:
+                data.message,
+
+            icon:
+                "./icon-512.png",
+
+            badge:
+                "./icon-192.png",
+
+            vibrate: [
+                200,
+                100,
+                200
+            ],
+
+            data: {
+
+                url:
+                    "./index.html"
+
+            }
+
+        };
+
+
+        event.waitUntil(
+
+            self.registration.showNotification(
+
+                data.title,
+
+                options
+
+            )
+
+        );
+
     }
-
-    const options = {
-
-        body: data.message,
-
-        icon: "icon-512.png",
-
-        badge: "icon-512.png",
-
-        vibrate: [
-            200,
-            100,
-            200
-        ]
-
-    };
-
-    event.waitUntil(
-
-        self.registration.showNotification(
-            data.title,
-            options
-        )
-
-    );
-
-});
+);
 
 
-// =====================================================
-// NOTIFICATION CLICK
-// =====================================================
+/* =====================================================
+   NOTIFICATION CLICK
+===================================================== */
 
-self.addEventListener("notificationclick", event => {
+self.addEventListener(
+    "notificationclick",
+    event => {
 
-    event.notification.close();
+        event.notification.close();
 
-    event.waitUntil(
 
-        clients.openWindow("./")
+        event.waitUntil(
 
-    );
+            clients.matchAll({
 
-});
+                type:
+                    "window",
+
+                includeUncontrolled:
+                    true
+
+            })
+
+            .then(
+                windowClients => {
+
+                    for (
+                        const client
+                        of windowClients
+                    ) {
+
+                        if (
+                            "focus"
+                            in client
+                        ) {
+
+                            return client.focus();
+
+                        }
+
+                    }
+
+
+                    if (
+                        clients.openWindow
+                    ) {
+
+                        return clients.openWindow(
+                            "./index.html"
+                        );
+
+                    }
+
+                }
+
+            )
+
+        );
+
+    }
+);
+
+
+/* =====================================================
+   REMINDO SERVICE WORKER COMPLETE
+===================================================== */
